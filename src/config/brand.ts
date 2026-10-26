@@ -9,6 +9,12 @@ export const BRAND_CONFIG = {
   shortName: 'Ziba',
 
   /**
+   * Official brand logo file located in public/ folder (e.g. '/logo.png', '/logo.svg')
+   * If the file is missing or null, the header automatically falls back to the clean text logo.
+   */
+  logoUrl: '/logo.png',
+
+  /**
    * Brand tagline
    * [CONFIRM] with client
    */

@@ -12,6 +12,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [logoFailed, setLogoFailed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -46,10 +47,20 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
             <div className="flex-shrink-0 flex items-center">
               <Link
                 to="/"
-                className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 hover:text-[#D46A7E] transition-colors"
+                className="flex items-center hover:opacity-90 transition-opacity"
               >
-                {/* TODO(client): Replace text with client's official brand logo image when provided */}
-                <span>{BRAND_CONFIG.name}</span>
+                {BRAND_CONFIG.logoUrl && !logoFailed ? (
+                  <img
+                    src={BRAND_CONFIG.logoUrl}
+                    alt={BRAND_CONFIG.name}
+                    className="h-10 sm:h-12 w-auto object-contain"
+                    onError={() => setLogoFailed(true)}
+                  />
+                ) : (
+                  <span className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 hover:text-[#D46A7E] transition-colors">
+                    {BRAND_CONFIG.name}
+                  </span>
+                )}
               </Link>
             </div>
 

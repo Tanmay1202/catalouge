@@ -5,12 +5,25 @@ import { Package, ArrowLeft } from 'lucide-react';
 import { BRAND_CONFIG } from '../../config/brand';
 
 export const AdminSidebar: React.FC<{ onCloseMobile?: () => void }> = ({ onCloseMobile }) => {
+  const [logoFailed, setLogoFailed] = React.useState(false);
+
   return (
     <aside className="w-64 bg-white border-r border-zinc-200 flex flex-col h-full">
       {/* Brand Header */}
       <div className="h-16 flex items-center px-6 border-b border-zinc-200">
-        <Link to="/" className="text-lg font-bold tracking-tight text-zinc-900">
-          {BRAND_CONFIG.name}
+        <Link to="/" className="flex items-center hover:opacity-90">
+          {BRAND_CONFIG.logoUrl && !logoFailed ? (
+            <img
+              src={BRAND_CONFIG.logoUrl}
+              alt={BRAND_CONFIG.name}
+              className="h-8 w-auto object-contain"
+              onError={() => setLogoFailed(true)}
+            />
+          ) : (
+            <span className="text-lg font-bold tracking-tight text-zinc-900">
+              {BRAND_CONFIG.name}
+            </span>
+          )}
         </Link>
       </div>
 

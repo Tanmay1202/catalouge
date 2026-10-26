@@ -35,13 +35,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantStyles = {
       primary:
-        'bg-[#D46A7E] text-white hover:bg-[#BC5568] focus:ring-[#D46A7E] active:scale-[0.99] shadow-xs',
+        'bg-[#C47A53] text-white hover:bg-[#AC643F] focus:ring-[#C47A53] active:scale-[0.99] shadow-xs',
       secondary:
-        'bg-white text-zinc-800 hover:bg-zinc-50 border border-zinc-200 focus:ring-[#D46A7E]',
+        'bg-white text-[#2B1A15] hover:bg-[#F7ECE4] border border-[#EBDCD2] focus:ring-[#C47A53]',
       outline:
-        'bg-transparent text-[#D46A7E] hover:bg-rose-50/50 border border-[#D46A7E] focus:ring-[#D46A7E]',
+        'bg-transparent text-[#C47A53] hover:bg-[#F7ECE4] border border-[#C47A53] focus:ring-[#C47A53]',
       ghost:
-        'bg-transparent text-zinc-700 hover:bg-zinc-100 focus:ring-zinc-400',
+        'bg-transparent text-[#2B1A15] hover:bg-[#F7ECE4] focus:ring-[#C47A53]',
       danger:
         'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-xs',
     };

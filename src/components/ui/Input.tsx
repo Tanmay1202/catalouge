@@ -29,31 +29,31 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5"
+            className="block text-xs font-semibold uppercase tracking-wider text-[#7D6B63] mb-1.5"
           >
             {label}
           </label>
         )}
         <div className="relative rounded-md">
           {leftIcon && (
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#7D6B63]">
               {leftIcon}
             </div>
           )}
           <input
             id={inputId}
             ref={ref}
-            className={`block w-full rounded-md border text-sm transition-colors duration-150 placeholder:text-zinc-400 focus:outline-none focus:ring-1 ${
+            className={`block w-full rounded-md border text-sm transition-colors duration-150 placeholder:text-[#7D6B63]/60 focus:outline-none focus:ring-1 ${
               leftIcon ? 'pl-9' : 'pl-3.5'
             } ${rightIcon ? 'pr-9' : 'pr-3.5'} py-2.5 ${
               error
                 ? 'border-red-400 bg-red-50/20 text-red-900 focus:border-red-500 focus:ring-red-500'
-                : 'border-zinc-200 bg-white text-zinc-900 focus:border-[#D46A7E] focus:ring-[#D46A7E]'
+                : 'border-[#EBDCD2] bg-white text-[#2B1A15] focus:border-[#C47A53] focus:ring-[#C47A53]'
             } ${className}`}
             {...props}
           />
           {rightIcon && (
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-400">
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#7D6B63]">
               {rightIcon}
             </div>
           )}
@@ -61,7 +61,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {error ? (
           <p className="mt-1.5 text-xs text-red-600 font-medium">{error}</p>
         ) : helperText ? (
-          <p className="mt-1.5 text-xs text-zinc-500">{helperText}</p>
+          <p className="mt-1.5 text-xs text-[#7D6B63]">{helperText}</p>
         ) : null}
       </div>
     );

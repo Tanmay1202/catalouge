@@ -10,20 +10,20 @@
   }
 
   body {
-    background-color: #FAFAFA;
-    color: #18181B;
+    background-color: #FAF6F2;
+    color: #2B1A15;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
   /* Consistent typography hierarchy using single sans-serif */
   h1 {
-    @apply text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-900;
+    @apply text-2xl sm:text-3xl font-semibold tracking-tight text-[#2B1A15];
   }
   h2 {
-    @apply text-xl sm:text-2xl font-semibold tracking-tight text-zinc-900;
+    @apply text-xl sm:text-2xl font-semibold tracking-tight text-[#2B1A15];
   }
   h3 {
-    @apply text-lg sm:text-xl font-medium text-zinc-900;
+    @apply text-lg sm:text-xl font-medium text-[#2B1A15];
   }
 }
 
@@ -37,21 +37,21 @@
   }
 }
 
-/* Minimal subtle scrollbar */
+/* Minimal subtle warm scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F4F4F5;
+  background: #F7ECE4;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D4D4D8;
+  background: #E0C7B8;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #A1A1AA;
+  background: #C47A53;
 }

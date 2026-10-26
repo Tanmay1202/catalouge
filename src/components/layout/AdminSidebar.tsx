@@ -41,7 +41,7 @@ export const AdminSidebar: React.FC<{ onCloseMobile?: () => void }> = ({ onClose
             }`
           }
         >
-          <Package className="w-4 h-4 text-[#D46A7E]" />
+          <Package className="w-4 h-4 text-[#C47A53]" />
           <span>Products</span>
         </NavLink>
       </nav>

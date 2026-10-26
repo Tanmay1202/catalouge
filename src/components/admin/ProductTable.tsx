@@ -124,7 +124,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
 
                       <button
                         onClick={() => onEdit(product)}
-                        className="text-xs font-semibold text-zinc-700 hover:text-[#D46A7E] inline-flex items-center gap-1"
+                        className="text-xs font-semibold text-[#2B1A15] hover:text-[#C47A53] inline-flex items-center gap-1"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                         <span>Edit</span>

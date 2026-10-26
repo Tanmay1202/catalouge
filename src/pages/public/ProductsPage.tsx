@@ -1,5 +1,5 @@
 // src/pages/public/ProductsPage.tsx
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Search, X, ArrowLeft } from 'lucide-react';
 import { Product } from '../../types/product';
@@ -82,15 +82,15 @@ export const ProductsPage: React.FC = () => {
       <div className="mb-6 space-y-2">
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-900 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-[#7D6B63] hover:text-[#2B1A15] transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Home</span>
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#2B1A15]">
           {categoryParam ? `${categoryParam} Collection` : 'All Jewellery Pieces'}
         </h1>
-        <p className="text-xs sm:text-sm text-zinc-500">
+        <p className="text-xs sm:text-sm text-[#7D6B63]">
           Browse handcrafted artificial jewellery by {BRAND_CONFIG.name}. Enquire directly on WhatsApp to order.
         </p>
       </div>
@@ -100,13 +100,13 @@ export const ProductsPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           {/* Search Input */}
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-[#7D6B63] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               placeholder="Search by name..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full text-xs sm:text-sm rounded-md border border-zinc-200 bg-white pl-9 pr-8 py-2 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-[#D46A7E]"
+              className="w-full text-xs sm:text-sm rounded-md border border-[#EBDCD2] bg-white pl-9 pr-8 py-2 text-[#2B1A15] placeholder:text-[#7D6B63]/60 focus:outline-none focus:ring-1 focus:ring-[#C47A53] focus:border-[#C47A53]"
             />
             {searchInput && (
               <button
@@ -115,7 +115,7 @@ export const ProductsPage: React.FC = () => {
                   setSearchInput('');
                   updateParam('search', '');
                 }}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#7D6B63] hover:text-[#2B1A15]"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -124,11 +124,11 @@ export const ProductsPage: React.FC = () => {
 
           {/* Sort Dropdown */}
           <div className="flex items-center justify-between sm:justify-end gap-2">
-            <span className="text-xs text-zinc-500">Sort by:</span>
+            <span className="text-xs text-[#7D6B63]">Sort by:</span>
             <select
               value={sortParam}
               onChange={(e) => updateParam('sort', e.target.value)}
-              className="text-xs rounded-md border border-zinc-200 bg-white px-2.5 py-1.5 text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#D46A7E]"
+              className="text-xs rounded-md border border-[#EBDCD2] bg-white px-2.5 py-1.5 text-[#2B1A15] focus:outline-none focus:ring-1 focus:ring-[#C47A53]"
             >
               <option value="newest">Newest</option>
               <option value="price-asc">Price: Low to High</option>
@@ -141,10 +141,10 @@ export const ProductsPage: React.FC = () => {
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           <button
             onClick={() => updateParam('category', '')}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors min-h-[36px] ${
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors min-h-[36px] ${
               !categoryParam
-                ? 'bg-zinc-900 text-white'
-                : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50'
+                ? 'bg-[#2B1A15] text-white shadow-2xs'
+                : 'bg-white text-[#2B1A15] border border-[#EBDCD2] hover:bg-[#F7ECE4]'
             }`}
           >
             All Categories
@@ -153,10 +153,10 @@ export const ProductsPage: React.FC = () => {
             <button
               key={cat}
               onClick={() => updateParam('category', categoryParam === cat ? '' : cat)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors min-h-[36px] ${
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors min-h-[36px] ${
                 categoryParam === cat
-                  ? 'bg-zinc-900 text-white'
-                  : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50'
+                  ? 'bg-[#2B1A15] text-white shadow-2xs'
+                  : 'bg-white text-[#2B1A15] border border-[#EBDCD2] hover:bg-[#F7ECE4]'
               }`}
             >
               {cat}
@@ -165,7 +165,7 @@ export const ProductsPage: React.FC = () => {
           {hasFilters && (
             <button
               onClick={handleClearFilters}
-              className="text-xs text-[#D46A7E] hover:underline px-2 py-1 font-medium whitespace-nowrap"
+              className="text-xs text-[#C47A53] hover:underline px-2 py-1 font-semibold whitespace-nowrap"
             >
               Reset Filters
             </button>
@@ -179,11 +179,11 @@ export const ProductsPage: React.FC = () => {
           <Spinner size="md" label="Loading catalogue..." />
         </div>
       ) : products.length === 0 ? (
-        <div className="text-center py-16 px-4 rounded-lg border border-dashed border-zinc-200 bg-white space-y-3">
-          <p className="text-sm font-medium text-zinc-800">No jewellery pieces match your search or filter.</p>
+        <div className="text-center py-16 px-4 rounded-lg border border-dashed border-[#EBDCD2] bg-white space-y-3">
+          <p className="text-sm font-medium text-[#2B1A15]">No jewellery pieces match your search or filter.</p>
           <button
             onClick={handleClearFilters}
-            className="text-xs text-[#D46A7E] font-medium hover:underline"
+            className="text-xs text-[#C47A53] font-semibold hover:underline"
           >
             Clear all filters
           </button>

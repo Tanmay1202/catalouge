@@ -160,21 +160,21 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Short description of stone work, length, occasion..."
-              className="w-full text-xs sm:text-sm rounded-md border border-zinc-200 bg-white p-2.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-[#D46A7E]"
+              className="w-full text-xs sm:text-sm rounded-md border border-[#EBDCD2] bg-white p-2.5 text-[#2B1A15] focus:outline-none focus:ring-1 focus:ring-[#C47A53]"
             />
           </div>
 
           {/* Visibility Controls */}
-          <div className="p-3.5 rounded-lg border border-zinc-200 bg-zinc-50 space-y-3">
+          <div className="p-3.5 rounded-lg border border-[#EBDCD2] bg-[#FAF6F2] space-y-3">
             <div className="flex items-center gap-2.5">
               <input
                 type="checkbox"
                 id="is_active"
                 checked={formData.is_active}
                 onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                className="w-4 h-4 rounded text-[#D46A7E] focus:ring-[#D46A7E] border-zinc-300"
+                className="w-4 h-4 rounded text-[#C47A53] focus:ring-[#C47A53] border-[#EBDCD2]"
               />
-              <label htmlFor="is_active" className="text-xs font-medium text-zinc-800">
+              <label htmlFor="is_active" className="text-xs font-medium text-[#2B1A15]">
                 Active in public catalogue
               </label>
             </div>
@@ -185,9 +185,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 id="is_featured"
                 checked={formData.is_featured}
                 onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
-                className="w-4 h-4 rounded text-[#D46A7E] focus:ring-[#D46A7E] border-zinc-300"
+                className="w-4 h-4 rounded text-[#C47A53] focus:ring-[#C47A53] border-[#EBDCD2]"
               />
-              <label htmlFor="is_featured" className="text-xs font-medium text-zinc-800">
+              <label htmlFor="is_featured" className="text-xs font-medium text-[#2B1A15]">
                 Featured on homepage
               </label>
             </div>

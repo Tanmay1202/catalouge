@@ -48,7 +48,7 @@ export const LoginPage: React.FC = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3">
         <Link
           to="/"
-          className="text-2xl font-bold tracking-tight text-zinc-900 inline-block hover:text-[#D46A7E] transition-colors"
+          className="text-2xl font-bold tracking-tight text-[#2B1A15] inline-block hover:text-[#C47A53] transition-colors"
         >
           {BRAND_NAME}
         </Link>

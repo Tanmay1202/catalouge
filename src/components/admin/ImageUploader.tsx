@@ -93,8 +93,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         onClick={() => fileInputRef.current?.click()}
         className={`relative flex flex-col items-center justify-center p-6 rounded-lg border-2 border-dashed transition-all cursor-pointer text-center ${
           isDragOver
-            ? 'border-[#D46A7E] bg-rose-50/30'
-            : 'border-zinc-200 bg-zinc-50 hover:bg-zinc-100'
+            ? 'border-[#C47A53] bg-[#F7ECE4]'
+            : 'border-[#EBDCD2] bg-[#FAF6F2] hover:bg-[#F7ECE4]'
         }`}
       >
         <input
@@ -107,19 +107,19 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         />
 
         {isUploading ? (
-          <div className="flex flex-col items-center gap-2 py-4 text-[#D46A7E]">
+          <div className="flex flex-col items-center gap-2 py-4 text-[#C47A53]">
             <Loader2 className="w-6 h-6 animate-spin" />
             <p className="text-xs font-medium">Uploading image...</p>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-1.5 py-2">
-            <div className="w-10 h-10 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-zinc-500 shadow-xs">
-              <Upload className="w-4 h-4 text-[#D46A7E]" />
+            <div className="w-10 h-10 rounded-full bg-white border border-[#EBDCD2] flex items-center justify-center text-[#7D6B63] shadow-xs">
+              <Upload className="w-4 h-4 text-[#C47A53]" />
             </div>
-            <p className="text-xs sm:text-sm font-medium text-zinc-800">
-              Click to upload <span className="text-zinc-500 font-normal">or drag & drop</span>
+            <p className="text-xs sm:text-sm font-medium text-[#2B1A15]">
+              Click to upload <span className="text-[#7D6B63] font-normal">or drag & drop</span>
             </p>
-            <p className="text-[11px] text-zinc-400 font-mono">
+            <p className="text-[11px] text-[#7D6B63]/80 font-mono">
               ( JPG, PNG, WEBP — up to 5MB )
             </p>
           </div>

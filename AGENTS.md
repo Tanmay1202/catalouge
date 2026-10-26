@@ -22,12 +22,12 @@ Mobile-first catalogue website for **Ziba by Nidhi** (@ziba_by_nidhi_jewellery) 
 - **DO NOT USE:** "Fine jewellery", "bespoke", "luxury", "solid gold", "sterling silver", "anti-tarnish", or "waterproof" (unless explicitly verified with the client).
 - **Price Format:** Indian Rupee formatting (`₹1,299`).
 
-## Design Tokens
-- Background: `#FAFAFA` (page), `#FFFFFF` (card)
-- Text: near-black `#18181B`, muted gray `#71717A`
-- Accent: muted blush/rose `#D46A7E`
-- Borders: `#E4E4E7`
-- Font: Single sans-serif (`Inter`) for all text and logo
+## Design Tokens (Matching Logo Palette)
+- Background: `#FAF6F2` (soft warm ivory page), `#FFFFFF` (card)
+- Text: deep warm espresso `#2B1A15`, warm taupe `#7D6B63`
+- Accent: warm copper/rose-gold `#C47A53`, peach watercolor tint `#F7ECE4`
+- Borders: `#EBDCD2` (soft copper-sand)
+- Font: Single sans-serif (`Inter`) for all text and logo text fallback
 
 ## Verification After Changes
 Always run: `npx tsc -b && npm run build`

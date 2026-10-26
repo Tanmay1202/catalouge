@@ -9,10 +9,22 @@ export const BRAND_CONFIG = {
   shortName: 'Ziba',
 
   /**
-   * Official brand logo file located in public/ folder (e.g. '/logo.png', '/logo.svg')
-   * If the file is missing or null, the header automatically falls back to the clean text logo.
+   * Official brand logo file located in public/ folder
    */
-  logoUrl: '/logo.png',
+  logoUrl: '/logo.jpeg',
+
+  /**
+   * Palette matching the watercolor peach & copper metallic logo vibe
+   */
+  colors: {
+    copper: '#C47A53',
+    copperHover: '#AC643F',
+    copperLight: '#F7ECE4',
+    espresso: '#2B1A15',
+    taupe: '#7D6B63',
+    page: '#FAF6F2',
+    border: '#EBDCD2',
+  },
 
   /**
    * Brand tagline

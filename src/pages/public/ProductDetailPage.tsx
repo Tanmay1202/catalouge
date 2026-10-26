@@ -56,16 +56,16 @@ export const ProductDetailPage: React.FC = () => {
   if (!product) {
     return (
       <div className="max-w-xl mx-auto px-4 py-20 text-center space-y-4">
-        <h1 className="text-2xl font-bold text-zinc-900">
+        <h1 className="text-2xl font-bold text-[#2B1A15]">
           Piece Not Found
         </h1>
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-[#7D6B63]">
           The requested jewellery piece may have been removed or updated.
         </p>
         <div className="pt-2">
           <Link
             to="/products"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-zinc-900 text-white text-xs font-medium hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#2B1A15] text-white text-xs font-medium hover:bg-[#3D261E] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Shop</span>
@@ -92,7 +92,7 @@ export const ProductDetailPage: React.FC = () => {
       <div className="mb-6">
         <Link
           to="/products"
-          className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7D6B63] hover:text-[#2B1A15] transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Shop</span>
@@ -103,7 +103,7 @@ export const ProductDetailPage: React.FC = () => {
         {/* Left Column: Image Showcase */}
         <div className="space-y-3">
           {/* Main Large Image (4:5 aspect ratio) */}
-          <div className="aspect-[4/5] w-full rounded-lg bg-zinc-100 border border-zinc-200 overflow-hidden">
+          <div className="aspect-[4/5] w-full rounded-lg bg-[#F7ECE4] border border-[#EBDCD2] overflow-hidden shadow-2xs">
             <img
               src={images[selectedImageIndex] || images[0]}
               alt={`Handcrafted artificial jewellery — ${product.name}`}
@@ -117,14 +117,14 @@ export const ProductDetailPage: React.FC = () => {
 
           {/* Thumbnail row if multiple images exist */}
           {images.length > 1 && (
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
               {images.map((img, idx) => (
                 <button
                   key={idx}
                   type="button"
                   onClick={() => setSelectedImageIndex(idx)}
                   className={`w-16 h-16 rounded-md overflow-hidden border-2 flex-shrink-0 transition-all ${
-                    selectedImageIndex === idx ? 'border-[#D46A7E]' : 'border-zinc-200 opacity-70 hover:opacity-100'
+                    selectedImageIndex === idx ? 'border-[#C47A53] shadow-xs' : 'border-[#EBDCD2] opacity-70 hover:opacity-100'
                   }`}
                 >
                   <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
@@ -137,20 +137,20 @@ export const ProductDetailPage: React.FC = () => {
         {/* Right Column: Details & WhatsApp Action */}
         <div className="space-y-6">
           <div className="space-y-2">
-            <span className="text-xs uppercase font-semibold tracking-wider text-[#D46A7E]">
+            <span className="text-xs uppercase font-bold tracking-wider text-[#C47A53]">
               {product.category}
             </span>
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#2B1A15]">
               {product.name}
             </h1>
 
             {/* Price */}
             <div className="flex items-baseline gap-2.5 pt-1">
-              <span className="text-2xl font-bold text-zinc-900">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#2B1A15]">
                 {formatPrice(product.price)}
               </span>
               {product.original_price && product.original_price > product.price && (
-                <span className="text-sm text-zinc-400 line-through">
+                <span className="text-sm text-[#7D6B63]/70 line-through">
                   {formatPrice(product.original_price)}
                 </span>
               )}
@@ -158,11 +158,11 @@ export const ProductDetailPage: React.FC = () => {
           </div>
 
           {/* Description */}
-          <div className="border-t border-zinc-200 pt-4 space-y-2">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+          <div className="border-t border-[#EBDCD2] pt-4 space-y-2">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-[#7D6B63]">
               Description
             </h2>
-            <p className="text-sm text-zinc-700 leading-relaxed whitespace-pre-line">
+            <p className="text-sm text-[#2B1A15]/90 leading-relaxed whitespace-pre-line">
               {product.description || 'Handcrafted artificial jewellery designed for everyday sparkle and festive occasions.'}
             </p>
           </div>
@@ -177,19 +177,19 @@ export const ProductDetailPage: React.FC = () => {
               <MessageCircle className="w-5 h-5 fill-current" />
               <span>Enquire on WhatsApp</span>
             </button>
-            <p className="text-xs text-center text-zinc-500">
+            <p className="text-xs text-center text-[#7D6B63]">
               Orders and enquiries are handled directly on WhatsApp.
             </p>
           </div>
 
           {/* Simple Instagram link */}
-          <div className="pt-4 border-t border-zinc-200 text-xs text-zinc-500 flex items-center justify-between">
+          <div className="pt-4 border-t border-[#EBDCD2] text-xs text-[#7D6B63] flex items-center justify-between">
             <span>Brand: {BRAND_CONFIG.name}</span>
             <a
               href={BRAND_CONFIG.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#D46A7E] hover:underline font-medium"
+              className="text-[#C47A53] hover:underline font-semibold"
             >
               Follow {BRAND_CONFIG.instagramHandle}
             </a>

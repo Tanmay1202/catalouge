@@ -1,6 +1,6 @@
 // src/pages/public/HomePage.tsx
 import React, { useEffect, useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Instagram, MessageCircle } from 'lucide-react';
 import { Product } from '../../types/product';
 import { fetchActiveProducts } from '../../lib/products';
@@ -14,7 +14,6 @@ export const HomePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'newest' | 'price-asc' | 'price-desc'>('newest');
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
@@ -58,23 +57,23 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="space-y-12 sm:space-y-16">
-      {/* 3. Hero Banner: Clean full-width section with heading, subtext, and single 'Shop now' button */}
-      <section className="bg-zinc-100 border-b border-zinc-200">
+      {/* 3. Hero Banner: Warm Peach & Copper Watercolor Wash vibe */}
+      <section className="bg-gradient-to-b from-[#F7ECE4] via-[#FDF8F5] to-[#FAF6F2] border-b border-[#EBDCD2]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 text-center">
           <div className="max-w-2xl mx-auto space-y-4">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#D46A7E]">
+            <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#C47A53] px-3 py-1 rounded-full bg-[#FAF6F2] border border-[#EBDCD2]">
               {BRAND_CONFIG.shortName} Jewellery Collection
             </span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900 leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#2B1A15] leading-tight">
               Handcrafted Artificial Jewellery for Everyday Sparkle
             </h1>
-            <p className="text-sm sm:text-base text-zinc-600 max-w-lg mx-auto">
+            <p className="text-sm sm:text-base text-[#7D6B63] max-w-lg mx-auto">
               Explore trendy necklaces, earrings, bangles, and bracelets. Pick your favourites and place an order directly on WhatsApp.
             </p>
             <div className="pt-2">
               <button
                 onClick={scrollToProducts}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#D46A7E] hover:bg-[#BC5568] text-white text-sm font-semibold transition-colors min-h-[44px]"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#C47A53] hover:bg-[#AC643F] text-white text-sm font-semibold transition-colors min-h-[44px] shadow-sm"
               >
                 <span>Shop Now</span>
                 <ArrowRight className="w-4 h-4" />
@@ -87,18 +86,18 @@ export const HomePage: React.FC = () => {
       {/* 4. Shop by Category: Single row / mobile scrollable category tiles */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg sm:text-xl font-bold text-zinc-900">
+          <h2 className="text-lg sm:text-xl font-bold text-[#2B1A15]">
             Shop by Category
           </h2>
           <Link
             to="/products"
-            className="text-xs sm:text-sm font-medium text-[#D46A7E] hover:underline"
+            className="text-xs sm:text-sm font-medium text-[#C47A53] hover:underline"
           >
             View All
           </Link>
         </div>
 
-        {/* Scrollable category tiles on mobile, grid on desktop */}
+        {/* Category tiles */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {BRAND_CONFIG.categories.map((cat: Category) => {
             const meta = CATEGORY_METADATA[cat];
@@ -112,13 +111,13 @@ export const HomePage: React.FC = () => {
                   setSelectedCategory(isSelected ? '' : cat);
                   scrollToProducts();
                 }}
-                className={`group flex flex-col items-center text-center p-3 rounded-lg border transition-all ${
+                className={`group flex flex-col items-center text-center p-3.5 rounded-lg border transition-all ${
                   isSelected
-                    ? 'border-[#D46A7E] bg-rose-50/50'
-                    : 'border-zinc-200 bg-white hover:border-zinc-300'
+                    ? 'border-[#C47A53] bg-[#F7ECE4] shadow-xs ring-1 ring-[#C47A53]'
+                    : 'border-[#EBDCD2] bg-white hover:border-[#C47A53] hover:shadow-xs'
                 }`}
               >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-zinc-100 mb-2 border border-zinc-200">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-[#F7ECE4] mb-2.5 border border-[#EBDCD2] group-hover:border-[#C47A53] transition-colors">
                   <img
                     src={meta.image}
                     alt={`${cat} category`}
@@ -128,7 +127,7 @@ export const HomePage: React.FC = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-zinc-900">
+                <span className="text-xs sm:text-sm font-semibold text-[#2B1A15]">
                   {cat}
                 </span>
               </button>
@@ -143,24 +142,24 @@ export const HomePage: React.FC = () => {
         <div className="space-y-4 mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-zinc-900">
+              <h2 className="text-lg sm:text-xl font-bold text-[#2B1A15]">
                 {selectedCategory ? `${selectedCategory} Collection` : 'Featured Pieces'}
               </h2>
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-[#7D6B63]">
                 Showing {displayedProducts.length} {displayedProducts.length === 1 ? 'piece' : 'pieces'}
               </p>
             </div>
 
             {/* Sort Dropdown */}
             <div className="flex items-center gap-2">
-              <label htmlFor="sort-select" className="text-xs text-zinc-500">
+              <label htmlFor="sort-select" className="text-xs text-[#7D6B63]">
                 Sort:
               </label>
               <select
                 id="sort-select"
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as 'newest' | 'price-asc' | 'price-desc')}
-                className="text-xs rounded-md border border-zinc-200 bg-white px-2.5 py-1.5 text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#D46A7E]"
+                className="text-xs rounded-md border border-[#EBDCD2] bg-white px-2.5 py-1.5 text-[#2B1A15] focus:outline-none focus:ring-1 focus:ring-[#C47A53]"
               >
                 <option value="newest">Newest</option>
                 <option value="price-asc">Price: Low to High</option>
@@ -173,10 +172,10 @@ export const HomePage: React.FC = () => {
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
             <button
               onClick={() => setSelectedCategory('')}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors min-h-[36px] ${
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors min-h-[36px] ${
                 !selectedCategory
-                  ? 'bg-zinc-900 text-white'
-                  : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50'
+                  ? 'bg-[#2B1A15] text-white shadow-2xs'
+                  : 'bg-white text-[#2B1A15] border border-[#EBDCD2] hover:bg-[#F7ECE4]'
               }`}
             >
               All Pieces
@@ -185,10 +184,10 @@ export const HomePage: React.FC = () => {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(selectedCategory === cat ? '' : cat)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors min-h-[36px] ${
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors min-h-[36px] ${
                   selectedCategory === cat
-                    ? 'bg-zinc-900 text-white'
-                    : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50'
+                    ? 'bg-[#2B1A15] text-white shadow-2xs'
+                    : 'bg-white text-[#2B1A15] border border-[#EBDCD2] hover:bg-[#F7ECE4]'
                 }`}
               >
                 {cat}
@@ -203,11 +202,11 @@ export const HomePage: React.FC = () => {
             <Spinner size="md" label="Loading jewellery pieces..." />
           </div>
         ) : displayedProducts.length === 0 ? (
-          <div className="text-center py-12 px-4 rounded-lg border border-dashed border-zinc-200 bg-white">
-            <p className="text-sm font-medium text-zinc-800">No pieces found in this category.</p>
+          <div className="text-center py-12 px-4 rounded-lg border border-dashed border-[#EBDCD2] bg-white">
+            <p className="text-sm font-medium text-[#2B1A15]">No pieces found in this category.</p>
             <button
               onClick={() => setSelectedCategory('')}
-              className="mt-3 text-xs text-[#D46A7E] font-medium hover:underline"
+              className="mt-3 text-xs text-[#C47A53] font-semibold hover:underline"
             >
               Show all products
             </button>
@@ -224,7 +223,7 @@ export const HomePage: React.FC = () => {
         <div className="mt-8 text-center">
           <Link
             to="/products"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-50 text-xs font-medium transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-[#EBDCD2] bg-white text-[#2B1A15] hover:bg-[#F7ECE4] hover:border-[#C47A53] text-xs font-medium transition-colors"
           >
             <span>Browse Full Catalogue</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -234,11 +233,11 @@ export const HomePage: React.FC = () => {
 
       {/* 6. About Strip: 2-3 sentences about the brand and a link to Instagram */}
       <section id="about" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-8 text-center space-y-4">
-          <h2 className="text-xl font-bold text-zinc-900">
+        <div className="rounded-xl border border-[#EBDCD2] bg-white p-6 sm:p-8 text-center space-y-4 shadow-2xs">
+          <h2 className="text-xl font-bold text-[#2B1A15]">
             About {BRAND_CONFIG.name}
           </h2>
-          <p className="text-sm text-zinc-600 max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm text-[#7D6B63] max-w-xl mx-auto leading-relaxed">
             Welcome to {BRAND_CONFIG.name}. We craft and curate vibrant, lightweight artificial jewellery designed for everyday elegance and festive celebrations. Follow our journey and explore new arrivals directly on Instagram.
           </p>
           <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
@@ -246,16 +245,16 @@ export const HomePage: React.FC = () => {
               href={BRAND_CONFIG.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-zinc-900 text-white text-xs font-medium hover:bg-zinc-800 transition-colors min-h-[44px]"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#2B1A15] text-white text-xs font-medium hover:bg-[#3D261E] transition-colors min-h-[44px]"
             >
-              <Instagram className="w-4 h-4" />
+              <Instagram className="w-4 h-4 text-[#C47A53]" />
               <span>Follow {BRAND_CONFIG.instagramHandle}</span>
             </a>
             <a
               href={getProductWhatsAppLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#25D366] text-white text-xs font-medium hover:bg-[#20bd5a] transition-colors min-h-[44px]"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#25D366] text-white text-xs font-semibold hover:bg-[#20bd5a] transition-colors min-h-[44px]"
             >
               <MessageCircle className="w-4 h-4 fill-current" />
               <span>Chat on WhatsApp</span>

@@ -16,7 +16,7 @@ export const AdminLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#FAF8F5]">
+    <div className="min-h-screen flex bg-[#FAF6F2]">
       {/* Desktop Sidebar */}
       <div className="hidden lg:block w-64 flex-shrink-0">
         <div className="fixed inset-y-0 w-64">

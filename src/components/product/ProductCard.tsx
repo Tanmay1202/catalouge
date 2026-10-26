@@ -40,11 +40,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
   const productLink = `/products/${encodeURIComponent(product.id || product.product_code || '')}`;
 
   return (
-    <div className="group flex flex-col bg-white rounded-lg border border-zinc-200 overflow-hidden hover:border-zinc-300 transition-colors">
+    <div className="group flex flex-col bg-white rounded-lg border border-[#EBDCD2] overflow-hidden hover:border-[#C47A53] hover:shadow-xs transition-all duration-200">
       {/* Product Image: 4:5 aspect ratio with lazy loading and meaningful alt */}
       <Link
         to={productLink}
-        className="relative block aspect-[4/5] bg-zinc-100 overflow-hidden"
+        className="relative block aspect-[4/5] bg-[#F7ECE4] overflow-hidden"
       >
         <img
           src={primaryImage}
@@ -66,18 +66,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           {/* Product Name (max 2 lines) */}
           <Link
             to={productLink}
-            className="block text-sm font-medium text-zinc-900 hover:text-[#D46A7E] transition-colors line-clamp-2 leading-snug"
+            className="block text-sm font-medium text-[#2B1A15] hover:text-[#C47A53] transition-colors line-clamp-2 leading-snug"
           >
             {product.name}
           </Link>
 
           {/* Price with Indian digit grouping and optional strikethrough original price */}
           <div className="mt-1.5 flex items-baseline gap-2">
-            <span className="text-base font-semibold text-zinc-900">
+            <span className="text-base font-bold text-[#2B1A15]">
               {formatPrice(product.price)}
             </span>
             {product.original_price && product.original_price > product.price && (
-              <span className="text-xs text-zinc-400 line-through">
+              <span className="text-xs text-[#7D6B63]/70 line-through">
                 {formatPrice(product.original_price)}
               </span>
             )}
@@ -89,7 +89,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           onClick={handleWhatsAppClick}
           type="button"
           aria-label={`Enquire about ${product.name} on WhatsApp`}
-          className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-md bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-medium transition-colors min-h-[44px]"
+          className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-md bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-semibold transition-colors min-h-[44px] shadow-2xs"
         >
           <MessageCircle className="w-4 h-4 fill-current flex-shrink-0" />
           <span>Enquire on WhatsApp</span>

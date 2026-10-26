@@ -55,3 +55,13 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #C47A53;
 }
+
+/* Utility: Hide scrollbar for clean horizontal swipes */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

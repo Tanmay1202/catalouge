@@ -1,15 +1,10 @@
 // src/components/layout/Header.tsx
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, Menu, X, MessageCircle } from 'lucide-react';
+import { Search, X, MessageCircle } from 'lucide-react';
 import { BRAND_CONFIG, getProductWhatsAppLink } from '../../config/brand';
 
-interface HeaderProps {
-  onOpenContact?: () => void;
-}
-
-export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+export const Header: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [logoFailed, setLogoFailed] = useState(false);
@@ -21,16 +16,25 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
     if (searchQuery.trim()) {
       navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
       setIsSearchOpen(false);
-      setIsMobileMenuOpen(false);
     }
   };
 
-  const navLinks = [
-    { label: 'Home', path: '/' },
-    { label: 'Shop', path: '/products' },
-    { label: 'About', path: '/#about' },
-    { label: 'Contact', path: '/#contact' },
+  // Build category navigation list: "All" followed by each category
+  const categoryNavItems = [
+    { label: 'All', path: '/products', category: '' },
+    ...BRAND_CONFIG.categories.map((cat) => ({
+      label: cat,
+      path: `/products?category=${encodeURIComponent(cat)}`,
+      category: cat,
+    })),
   ];
+
+  // Helper to determine if a category link is active
+  const isCategoryActive = (categoryValue: string) => {
+    if (location.pathname !== '/products') return false;
+    const currentCategory = new URLSearchParams(location.search).get('category') || '';
+    return currentCategory.toLowerCase() === categoryValue.toLowerCase();
+  };
 
   return (
     <>
@@ -42,15 +46,16 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
       {/* 2. Main Sticky Header */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-xs border-b border-[#EBDCD2]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-18 py-2">
+          <div className="flex items-center justify-between h-16 sm:h-18 py-2 gap-4">
             {/* Left: Brand Logo & Title */}
             <div className="flex-shrink-0 flex items-center">
               <Link
                 to="/"
-                className="flex items-center gap-3 group"
+                className="flex items-center gap-2.5 sm:gap-3 group"
+                aria-label={`${BRAND_CONFIG.name} Home`}
               >
                 {BRAND_CONFIG.logoUrl && !logoFailed && (
-                  <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-lg overflow-hidden border border-[#EBDCD2] bg-[#FAF6F2] flex items-center justify-center p-0.5 shadow-2xs group-hover:border-[#C47A53] transition-colors">
+                  <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg overflow-hidden border border-[#EBDCD2] bg-[#FAF6F2] flex items-center justify-center p-0.5 shadow-2xs group-hover:border-[#C47A53] transition-colors">
                     <img
                       src={BRAND_CONFIG.logoUrl}
                       alt={BRAND_CONFIG.name}
@@ -60,26 +65,28 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
                   </div>
                 )}
                 <div className="flex flex-col">
-                  <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#2B1A15] group-hover:text-[#C47A53] transition-colors leading-none">
+                  <span className="text-lg sm:text-2xl font-bold tracking-tight text-[#2B1A15] group-hover:text-[#C47A53] transition-colors leading-none">
                     Ziba
                   </span>
-                  <span className="text-[11px] sm:text-xs font-medium tracking-widest uppercase text-[#C47A53] mt-0.5">
+                  <span className="text-[10px] sm:text-xs font-medium tracking-widest uppercase text-[#C47A53] mt-0.5">
                     By Nidhi
                   </span>
                 </div>
               </Link>
             </div>
 
-            {/* Centre: Plain Text Navigation Links */}
-            <nav className="hidden md:flex items-center space-x-7 text-sm font-medium text-[#2B1A15]">
-              {navLinks.map((item) => {
-                const isActive = location.pathname === item.path && !item.path.includes('#');
+            {/* Centre: Category Navigation Bar (Desktop) */}
+            <nav className="hidden md:flex items-center justify-center space-x-1 lg:space-x-2 text-sm">
+              {categoryNavItems.map((item) => {
+                const active = isCategoryActive(item.category);
                 return (
                   <Link
                     key={item.label}
                     to={item.path}
-                    className={`hover:text-[#C47A53] transition-colors py-1 ${
-                      isActive ? 'text-[#C47A53] font-semibold border-b-2 border-[#C47A53]' : ''
+                    className={`px-3 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${
+                      active
+                        ? 'bg-[#C47A53] text-white shadow-2xs font-semibold'
+                        : 'text-[#2B1A15] hover:text-[#C47A53] hover:bg-[#F7ECE4]'
                     }`}
                   >
                     {item.label}
@@ -88,14 +95,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
               })}
             </nav>
 
-            {/* Right: Search Icon + WhatsApp Icon Link */}
-            <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Right: Search Icon + WhatsApp Action */}
+            <div className="flex items-center space-x-2">
               {/* Search Toggle Button */}
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
-                aria-label="Search jewellery"
-                className="p-2 text-[#2B1A15] hover:text-[#C47A53] hover:bg-[#F7ECE4] rounded-md transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Search catalogue"
+                className="p-2 text-[#2B1A15] hover:text-[#C47A53] hover:bg-[#F7ECE4] rounded-md transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -106,23 +113,33 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Contact Ziba by Nidhi on WhatsApp"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 text-xs font-semibold transition-colors min-h-[44px]"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 text-xs font-semibold transition-colors min-h-[40px]"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
                 <span className="hidden sm:inline">WhatsApp</span>
               </a>
-
-              {/* Mobile Hamburger Toggle */}
-              <button
-                type="button"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Open menu"
-                className="md:hidden p-2 text-[#2B1A15] hover:text-[#C47A53] min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md"
-              >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
             </div>
           </div>
+        </div>
+
+        {/* Mobile Category Strip: Horizontally scrollable 1-tap browsing */}
+        <div className="md:hidden border-t border-[#EBDCD2]/70 bg-[#FAF6F2] py-2 px-3 overflow-x-auto no-scrollbar flex items-center gap-1.5">
+          {categoryNavItems.map((item) => {
+            const active = isCategoryActive(item.category);
+            return (
+              <Link
+                key={item.label}
+                to={item.path}
+                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-colors min-h-[30px] flex items-center ${
+                  active
+                    ? 'bg-[#C47A53] text-white shadow-2xs font-semibold'
+                    : 'bg-white text-[#2B1A15] border border-[#EBDCD2] hover:border-[#C47A53]'
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Search Bar Dropdown */}
@@ -155,42 +172,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
                 <X className="w-5 h-5" />
               </button>
             </form>
-          </div>
-        )}
-
-        {/* Mobile Hamburger Menu Drawer */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-[#EBDCD2] bg-white px-4 pt-3 pb-6 space-y-3">
-            <div className="space-y-1">
-              {navLinks.map((item) => (
-                <Link
-                  key={item.label}
-                  to={item.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-3 py-2 rounded-md text-base font-medium text-[#2B1A15] hover:bg-[#F7ECE4]"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-
-            <div className="pt-3 border-t border-[#EBDCD2]">
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#7D6B63] px-3 mb-2">
-                Categories
-              </p>
-              <div className="grid grid-cols-2 gap-1 text-sm">
-                {BRAND_CONFIG.categories.map((cat) => (
-                  <Link
-                    key={cat}
-                    to={`/products?category=${encodeURIComponent(cat)}`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="px-3 py-1.5 text-[#2B1A15] hover:text-[#C47A53]"
-                  >
-                    {cat}
-                  </Link>
-                ))}
-              </div>
-            </div>
           </div>
         )}
       </header>

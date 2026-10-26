@@ -59,15 +59,15 @@ export const HomePage: React.FC = () => {
     <div className="space-y-12 sm:space-y-16">
       {/* 3. Hero Banner: Warm Peach & Copper Watercolor Wash vibe */}
       <section className="bg-gradient-to-b from-[#F7ECE4] via-[#FDF8F5] to-[#FAF6F2] border-b border-[#EBDCD2]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20 text-center">
           <div className="max-w-2xl mx-auto space-y-4">
             <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#C47A53] px-3 py-1 rounded-full bg-[#FAF6F2] border border-[#EBDCD2]">
               {BRAND_CONFIG.shortName} Jewellery Collection
             </span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#2B1A15] leading-tight">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#2B1A15] leading-tight">
               Handcrafted Artificial Jewellery for Everyday Sparkle
             </h1>
-            <p className="text-sm sm:text-base text-[#7D6B63] max-w-lg mx-auto">
+            <p className="text-xs sm:text-base text-[#7D6B63] max-w-lg mx-auto">
               Explore trendy necklaces, earrings, bangles, and bracelets. Pick your favourites and place an order directly on WhatsApp.
             </p>
             <div className="pt-2">
@@ -83,7 +83,7 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. Shop by Category: Single row / mobile scrollable category tiles */}
+      {/* 4. Shop by Category: Responsive tiles (swipeable on mobile, grid on desktop) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg sm:text-xl font-bold text-[#2B1A15]">
@@ -98,7 +98,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* Category tiles */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+        <div className="flex sm:grid sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 overflow-x-auto no-scrollbar pb-1">
           {BRAND_CONFIG.categories.map((cat: Category) => {
             const meta = CATEGORY_METADATA[cat];
             const isSelected = selectedCategory === cat;
@@ -111,13 +111,13 @@ export const HomePage: React.FC = () => {
                   setSelectedCategory(isSelected ? '' : cat);
                   scrollToProducts();
                 }}
-                className={`group flex flex-col items-center text-center p-3.5 rounded-lg border transition-all ${
+                className={`group shrink-0 w-[105px] sm:w-auto flex flex-col items-center text-center p-3 sm:p-3.5 rounded-lg border transition-all ${
                   isSelected
                     ? 'border-[#C47A53] bg-[#F7ECE4] shadow-xs ring-1 ring-[#C47A53]'
                     : 'border-[#EBDCD2] bg-white hover:border-[#C47A53] hover:shadow-xs'
                 }`}
               >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-[#F7ECE4] mb-2.5 border border-[#EBDCD2] group-hover:border-[#C47A53] transition-colors">
+                <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-[#F7ECE4] mb-2 sm:mb-2.5 border border-[#EBDCD2] group-hover:border-[#C47A53] transition-colors">
                   <img
                     src={meta.image}
                     alt={`${cat} category`}
@@ -127,7 +127,7 @@ export const HomePage: React.FC = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <span className="text-xs sm:text-sm font-semibold text-[#2B1A15]">
+                <span className="text-xs sm:text-sm font-semibold text-[#2B1A15] whitespace-nowrap">
                   {cat}
                 </span>
               </button>
@@ -169,7 +169,7 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Category filter chips */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
             <button
               onClick={() => setSelectedCategory('')}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors min-h-[36px] ${

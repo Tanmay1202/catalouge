@@ -96,13 +96,13 @@ export const Header: React.FC = () => {
             </nav>
 
             {/* Right: Search Icon + WhatsApp Action */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1.5 sm:space-x-2">
               {/* Search Toggle Button */}
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 aria-label="Search catalogue"
-                className="p-2 text-[#2B1A15] hover:text-[#C47A53] hover:bg-[#F7ECE4] rounded-md transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+                className="p-2 text-[#2B1A15] hover:text-[#C47A53] hover:bg-[#F7ECE4] rounded-md transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -113,7 +113,7 @@ export const Header: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Contact Ziba by Nidhi on WhatsApp"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 text-xs font-semibold transition-colors min-h-[40px]"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 text-xs font-semibold transition-colors min-h-[44px]"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
                 <span className="hidden sm:inline">WhatsApp</span>
@@ -123,14 +123,14 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Mobile Category Strip: Horizontally scrollable 1-tap browsing */}
-        <div className="md:hidden border-t border-[#EBDCD2]/70 bg-[#FAF6F2] py-2 px-3 overflow-x-auto no-scrollbar flex items-center gap-1.5">
+        <div className="md:hidden border-t border-[#EBDCD2]/70 bg-[#FAF6F2] py-2.5 px-3 overflow-x-auto no-scrollbar flex items-center gap-2">
           {categoryNavItems.map((item) => {
             const active = isCategoryActive(item.category);
             return (
               <Link
                 key={item.label}
                 to={item.path}
-                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-colors min-h-[30px] flex items-center ${
+                className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors min-h-[36px] flex items-center ${
                   active
                     ? 'bg-[#C47A53] text-white shadow-2xs font-semibold'
                     : 'bg-white text-[#2B1A15] border border-[#EBDCD2] hover:border-[#C47A53]'

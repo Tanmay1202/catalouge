@@ -89,10 +89,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           onClick={handleWhatsAppClick}
           type="button"
           aria-label={`Enquire about ${product.name} on WhatsApp`}
-          className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-md bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-semibold transition-colors min-h-[44px] shadow-2xs"
+          className="w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 rounded-md bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-semibold transition-colors min-h-[44px] shadow-2xs"
         >
-          <MessageCircle className="w-4 h-4 fill-current flex-shrink-0" />
-          <span>Enquire on WhatsApp</span>
+          <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current flex-shrink-0" />
+          <span>
+            <span className="hidden sm:inline">Enquire on </span>WhatsApp
+          </span>
         </button>
       </div>
     </div>

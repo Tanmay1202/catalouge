@@ -117,7 +117,7 @@ export const ProductDetailPage: React.FC = () => {
 
           {/* Thumbnail row if multiple images exist */}
           {images.length > 1 && (
-            <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-1 no-scrollbar">
               {images.map((img, idx) => (
                 <button
                   key={idx}

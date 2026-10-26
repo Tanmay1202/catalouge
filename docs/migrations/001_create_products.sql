@@ -5,27 +5,30 @@
 
 -- Create products table
 CREATE TABLE IF NOT EXISTS public.products (
-  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  product_code  TEXT NOT NULL,
-  name          TEXT NOT NULL,
-  category      TEXT NOT NULL,
-  description   TEXT NOT NULL DEFAULT '',
-  colors        TEXT[] NOT NULL DEFAULT '{}',
-  images        TEXT[] NOT NULL DEFAULT '{}',
-  is_active     BOOLEAN NOT NULL DEFAULT true,
-  is_featured   BOOLEAN NOT NULL DEFAULT false,
-  created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  product_code    TEXT NOT NULL,
+  name            TEXT NOT NULL,
+  category        TEXT NOT NULL,
+  price           NUMERIC NOT NULL DEFAULT 0,
+  original_price  NUMERIC,
+  description     TEXT NOT NULL DEFAULT '',
+  colors          TEXT[] NOT NULL DEFAULT '{}',
+  images          TEXT[] NOT NULL DEFAULT '{}',
+  in_stock        BOOLEAN NOT NULL DEFAULT true,
+  is_active       BOOLEAN NOT NULL DEFAULT true,
+  is_featured     BOOLEAN NOT NULL DEFAULT false,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Enforce unique business product code (case-insensitive or exact text)
+-- Enforce unique business product code
 ALTER TABLE public.products 
   DROP CONSTRAINT IF EXISTS uq_products_product_code;
 
 ALTER TABLE public.products 
   ADD CONSTRAINT uq_products_product_code UNIQUE (product_code);
 
--- Check category constraint (extensible by dropping and re-adding constraint)
+-- Check category constraint
 ALTER TABLE public.products 
   DROP CONSTRAINT IF EXISTS chk_products_category;
 

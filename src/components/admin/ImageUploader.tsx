@@ -78,11 +78,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
   return (
     <div className="w-full space-y-4">
-      <label className="block text-xs font-semibold uppercase tracking-wider text-warm-gray mb-1">
+      <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1">
         Product Images
       </label>
 
-      {/* Drag & Drop Upload Zone (matching mockup) */}
+      {/* Drag & Drop Upload Zone */}
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -91,10 +91,10 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         onDragLeave={() => setIsDragOver(false)}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
-        className={`relative flex flex-col items-center justify-center p-8 rounded-xl border-2 border-dashed transition-all cursor-pointer text-center ${
+        className={`relative flex flex-col items-center justify-center p-6 rounded-lg border-2 border-dashed transition-all cursor-pointer text-center ${
           isDragOver
-            ? 'border-brand-brown bg-ivory/60'
-            : 'border-brand-border bg-ivory/20 hover:bg-ivory/40'
+            ? 'border-[#D46A7E] bg-rose-50/30'
+            : 'border-zinc-200 bg-zinc-50 hover:bg-zinc-100'
         }`}
       >
         <input
@@ -107,20 +107,20 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         />
 
         {isUploading ? (
-          <div className="flex flex-col items-center gap-2 py-4 text-brand-brown">
-            <Loader2 className="w-8 h-8 animate-spin" />
-            <p className="text-xs font-medium">Processing & uploading image...</p>
+          <div className="flex flex-col items-center gap-2 py-4 text-[#D46A7E]">
+            <Loader2 className="w-6 h-6 animate-spin" />
+            <p className="text-xs font-medium">Uploading image...</p>
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-2 py-2">
-            <div className="w-12 h-12 rounded-full bg-white border border-brand-border flex items-center justify-center text-warm-gray shadow-xs">
-              <Upload className="w-5 h-5 text-brand-brown" />
+          <div className="flex flex-col items-center gap-1.5 py-2">
+            <div className="w-10 h-10 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-zinc-500 shadow-xs">
+              <Upload className="w-4 h-4 text-[#D46A7E]" />
             </div>
-            <p className="text-sm font-medium text-brand-dark">
-              Click to upload images <span className="text-warm-gray font-normal">or drag and drop</span>
+            <p className="text-xs sm:text-sm font-medium text-zinc-800">
+              Click to upload <span className="text-zinc-500 font-normal">or drag & drop</span>
             </p>
-            <p className="text-xs text-warm-gray font-mono">
-              ( JPG, PNG, WEBP — up to 5MB each )
+            <p className="text-[11px] text-zinc-400 font-mono">
+              ( JPG, PNG, WEBP — up to 5MB )
             </p>
           </div>
         )}

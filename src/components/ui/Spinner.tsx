@@ -20,11 +20,11 @@ export const Spinner: React.FC<SpinnerProps> = ({
   return (
     <div className={`flex flex-col items-center justify-center gap-3 ${className}`}>
       <div
-        className={`${sizes[size]} rounded-full border-brand-border border-t-brand-gold animate-spin`}
+        className={`${sizes[size]} rounded-full border-zinc-200 border-t-[#D46A7E] animate-spin`}
         role="status"
         aria-label={label || 'Loading'}
       />
-      {label && <p className="text-xs text-warm-gray tracking-wide">{label}</p>}
+      {label && <p className="text-xs text-zinc-500 tracking-wide">{label}</p>}
     </div>
   );
 };

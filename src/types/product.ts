@@ -1,37 +1,42 @@
-export type Category = 'Necklaces' | 'Earrings' | 'Bracelets' | 'Rings' | 'Bangles';
+// src/types/product.ts
+import { Category } from '../config/brand';
+
+export type { Category };
 
 export interface Product {
   id: string;
-  product_code: string;
   name: string;
   category: Category;
-  description: string;
-  colors: string[];
+  price: number;
+  original_price?: number;
   images: string[];
+  description: string;
+  colors?: string[];
+  product_code?: string;
+  in_stock?: boolean;
   is_active: boolean;
   is_featured: boolean;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface ProductFormData {
-  product_code: string;
   name: string;
   category: Category;
+  price: number;
+  original_price?: number;
   description: string;
-  colors: string[];
+  colors?: string[];
+  product_code?: string;
   images?: string[];
+  in_stock?: boolean;
   is_active: boolean;
   is_featured: boolean;
-}
-
-export interface ColorOption {
-  name: string;
-  hex: string;
 }
 
 export interface ProductFilterParams {
   category?: string;
   search?: string;
   status?: 'all' | 'active' | 'inactive';
+  sort?: 'newest' | 'price-asc' | 'price-desc';
 }

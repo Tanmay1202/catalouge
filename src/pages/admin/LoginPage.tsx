@@ -48,20 +48,20 @@ export const LoginPage: React.FC = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3">
         <Link
           to="/"
-          className="font-serif text-3xl font-semibold tracking-wider text-brand-dark inline-block hover:opacity-90"
+          className="text-2xl font-bold tracking-tight text-zinc-900 inline-block hover:text-[#D46A7E] transition-colors"
         >
           {BRAND_NAME}
         </Link>
-        <h2 className="text-xl font-medium text-brand-dark">
-          Administrator Sign In
+        <h2 className="text-lg font-semibold text-zinc-800">
+          Admin Sign In
         </h2>
-        <p className="text-xs text-warm-gray">
-          Protected catalogue management console
+        <p className="text-xs text-zinc-500">
+          Catalogue management console
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow-sm border border-brand-border rounded-xl sm:px-10 space-y-6">
+        <div className="bg-white py-8 px-6 shadow-xs border border-zinc-200 rounded-lg sm:px-10 space-y-6">
           {!isSupabaseConfigured && (
             <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-950 space-y-1">
               <p className="font-semibold flex items-center gap-1.5">
@@ -72,7 +72,7 @@ export const LoginPage: React.FC = () => {
                 Supabase credentials not yet configured in <code className="font-mono">.env.local</code>. Use demo admin credentials:
               </p>
               <p className="font-mono text-[11px] pt-1">
-                <strong>Email:</strong> admin@aurelle.com<br />
+                <strong>Email:</strong> admin@ziba.com<br />
                 <strong>Password:</strong> admin123
               </p>
             </div>
@@ -90,7 +90,7 @@ export const LoginPage: React.FC = () => {
               type="email"
               autoComplete="email"
               required
-              placeholder="admin@aurelle.com"
+              placeholder="admin@ziba.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />

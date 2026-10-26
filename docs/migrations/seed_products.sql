@@ -1,66 +1,78 @@
 -- ==============================================================================
 -- seed_products.sql
--- Seed initial sample catalogue items matching the AURELLE UI reference mockup
+-- Seed initial sample catalogue items for Ziba by Nidhi
 -- ==============================================================================
 
-INSERT INTO public.products (product_code, name, category, description, colors, images, is_active, is_featured)
+INSERT INTO public.products (product_code, name, category, price, original_price, description, colors, images, is_active, is_featured)
 VALUES
 (
-  'AU-NK-012',
-  'Floral Grace Necklace',
+  'ZB-NK-01',
+  'Floral Kundan & Pearl Choker Set',
   'Necklaces',
-  'Elegant floral necklace with stone detailing. Perfect for festive occasions and everyday wear.',
-  ARRAY['Gold', 'Silver', 'Rose Gold'],
+  1499,
+  1899,
+  'Handcrafted floral motif choker with faux pearls and sparkling artificial stones. Comes with matching earrings.',
+  ARRAY['Gold Tone', 'Silver Tone'],
   ARRAY['https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=1000&auto=format&fit=crop'],
   true,
   true
 ),
 (
-  'AU-RG-021',
-  'Solitaire Bloom Ring',
+  'ZB-ER-02',
+  'Teardrop Crystal Chandbali Earrings',
+  'Earrings',
+  799,
+  999,
+  'Delicate artificial crystal chandbali earrings featuring tiered drops and lightweight festive finish.',
+  ARRAY['Gold Tone', 'Rose Gold Tone'],
+  ARRAY['https://images.unsplash.com/photo-1630019852942-f89202989a59?q=80&w=1000&auto=format&fit=crop'],
+  true,
+  true
+),
+(
+  'ZB-RG-03',
+  'Solitaire Bloom Adjustable Ring',
   'Rings',
-  'A sparkling solitaire stone nestled in a delicate prong setting with micro-pavé accents.',
-  ARRAY['Gold', 'Silver', 'Rose Gold'],
+  549,
+  NULL,
+  'Minimal everyday artificial stone ring with an adjustable band for easy, comfortable wear.',
+  ARRAY['Gold Tone', 'Silver Tone'],
   ARRAY['https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1000&auto=format&fit=crop'],
   true,
   true
 ),
 (
-  'AU-BR-008',
-  'Pearl Charm Bracelet',
+  'ZB-BR-04',
+  'Faux Pearl Charm Link Bracelet',
   'Bracelets',
-  'Delicate chain bracelet adorned with lustrous simulated pearls and zircon crystal charms.',
-  ARRAY['Gold', 'Silver', 'Rose Gold'],
+  699,
+  899,
+  'Chic artificial pearl charm bracelet on an adjustable metallic link chain. Perfect for daily styling.',
+  ARRAY['Gold Tone', 'Silver Tone'],
   ARRAY['https://images.unsplash.com/photo-1611591475819-79b8b730ab8c?q=80&w=1000&auto=format&fit=crop'],
   true,
   true
 ),
 (
-  'AU-BN-014',
-  'Classic Stone Bangles',
+  'ZB-BN-05',
+  'Classic Studded Kada Bangles (Set of 2)',
   'Bangles',
-  'Stacked contemporary bangles studded with brilliant cut crystals for everyday luxury.',
-  ARRAY['Gold', 'Silver', 'Rose Gold'],
+  1199,
+  1499,
+  'Set of two artificial stone-studded openable kada bangles with smooth inner lining for everyday luxury look.',
+  ARRAY['Gold Tone', 'Antique Finish'],
   ARRAY['https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?q=80&w=1000&auto=format&fit=crop'],
   true,
   true
 ),
 (
-  'AU-ER-003',
-  'Teardrop Crystal Earrings',
-  'Earrings',
-  'Timeless drop earrings featuring cascading floral crystals with a polished metallic finish.',
-  ARRAY['Gold', 'Silver'],
-  ARRAY['https://images.unsplash.com/photo-1630019852942-f89202989a59?q=80&w=1000&auto=format&fit=crop'],
-  true,
-  false
-),
-(
-  'AU-NK-005',
-  'Aurelle Heritage Choker',
+  'ZB-NK-06',
+  'Delicate Layered Pendant Chain',
   'Necklaces',
-  'Regal choker necklace featuring traditional motifs with refined modern craftsmanship.',
-  ARRAY['Gold', 'Antique'],
+  899,
+  NULL,
+  'Modern double-layer artificial chain necklace featuring dainty geometric charms.',
+  ARRAY['Gold Tone', 'Rose Gold Tone'],
   ARRAY['https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1000&auto=format&fit=crop'],
   true,
   false

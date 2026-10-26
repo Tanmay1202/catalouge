@@ -1,9 +1,9 @@
+// src/components/product/ProductCard.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle } from 'lucide-react';
 import { Product } from '../../types/product';
-import { ColorDots } from './ColorDots';
-import { getWhatsAppLink } from '../../config/constants';
+import { formatPrice, getProductWhatsAppLink, BRAND_CONFIG } from '../../config/brand';
 
 export interface ProductCardProps {
   product: Product;
@@ -16,71 +16,82 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
       ? product.images[0]
       : 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=800&auto=format&fit=crop';
 
+  const productUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/products/${encodeURIComponent(product.id || product.product_code || '')}`
+      : undefined;
+
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    window.open(
-      getWhatsAppLink(product.product_code, product.name),
-      '_blank',
-      'noopener,noreferrer'
-    );
+    e.preventDefault();
+
+    if (!BRAND_CONFIG.whatsappNumber) {
+      if (import.meta.env.DEV) {
+        console.warn(
+          '[Ziba by Nidhi] WhatsApp number is not configured. TODO(client): Add VITE_WHATSAPP_NUMBER.'
+        );
+      }
+    }
+
+    const link = getProductWhatsAppLink(product.name, product.price, productUrl);
+    window.open(link, '_blank', 'noopener,noreferrer');
   };
 
+  const productLink = `/products/${encodeURIComponent(product.id || product.product_code || '')}`;
+
   return (
-    <div className="group flex flex-col bg-white rounded-lg border border-brand-border/70 overflow-hidden shadow-xs hover:shadow-md transition-all duration-300">
-      {/* Product Image Frame */}
+    <div className="group flex flex-col bg-white rounded-lg border border-zinc-200 overflow-hidden hover:border-zinc-300 transition-colors">
+      {/* Product Image: 4:5 aspect ratio with lazy loading and meaningful alt */}
       <Link
-        to={`/products/${encodeURIComponent(product.product_code)}`}
-        className="relative block aspect-[4/4.5] sm:aspect-[4/4.5] bg-ivory/50 overflow-hidden"
+        to={productLink}
+        className="relative block aspect-[4/5] bg-zinc-100 overflow-hidden"
       >
         <img
           src={primaryImage}
-          alt={product.name}
+          alt={`Handcrafted artificial jewellery — ${product.name}`}
           loading={priority ? 'eager' : 'lazy'}
-          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+          width={400}
+          height={500}
+          className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-300"
           onError={(e) => {
-            // Graceful fallback if image link fails
             (e.target as HTMLImageElement).src =
               'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=800&auto=format&fit=crop';
           }}
         />
-
-        {/* Category tag subtle badge */}
-        <div className="absolute top-3 left-3">
-          <span className="px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-xs text-[10px] font-medium uppercase tracking-wider text-warm-gray shadow-xs">
-            {product.category}
-          </span>
-        </div>
       </Link>
 
-      {/* Content Details */}
-      <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between gap-3">
+      {/* Card Body */}
+      <div className="p-3.5 sm:p-4 flex flex-col flex-1 justify-between gap-3">
         <div>
-          {/* Product Code */}
-          <p className="text-[11px] font-mono font-medium uppercase tracking-wider text-warm-gray mb-1">
-            {product.product_code}
-          </p>
-
-          {/* Product Name */}
+          {/* Product Name (max 2 lines) */}
           <Link
-            to={`/products/${encodeURIComponent(product.product_code)}`}
-            className="block font-serif text-base sm:text-lg font-medium text-brand-dark hover:text-brand-brown transition-colors line-clamp-1"
+            to={productLink}
+            className="block text-sm font-medium text-zinc-900 hover:text-[#D46A7E] transition-colors line-clamp-2 leading-snug"
           >
             {product.name}
           </Link>
 
-          {/* Color Dots */}
-          <div className="mt-2.5">
-            <ColorDots colors={product.colors} size="md" />
+          {/* Price with Indian digit grouping and optional strikethrough original price */}
+          <div className="mt-1.5 flex items-baseline gap-2">
+            <span className="text-base font-semibold text-zinc-900">
+              {formatPrice(product.price)}
+            </span>
+            {product.original_price && product.original_price > product.price && (
+              <span className="text-xs text-zinc-400 line-through">
+                {formatPrice(product.original_price)}
+              </span>
+            )}
           </div>
         </div>
 
-        {/* Enquire on WhatsApp CTA button (matches mockup) */}
+        {/* Primary Action Button: Enquire on WhatsApp */}
         <button
           onClick={handleWhatsAppClick}
           type="button"
-          className="w-full mt-2 inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-md border border-brand-border bg-ivory/60 hover:bg-brand-brown hover:text-white hover:border-brand-brown text-brand-dark text-xs font-medium tracking-wide transition-all duration-200"
+          aria-label={`Enquire about ${product.name} on WhatsApp`}
+          className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-md bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-medium transition-colors min-h-[44px]"
         >
-          <MessageCircle className="w-3.5 h-3.5 text-[#128C7E] group-hover:text-white transition-colors" />
+          <MessageCircle className="w-4 h-4 fill-current flex-shrink-0" />
           <span>Enquire on WhatsApp</span>
         </button>
       </div>

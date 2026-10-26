@@ -1,11 +1,12 @@
+// src/components/admin/ProductTable.tsx
 import React from 'react';
 import { Product } from '../../types/product';
-import { ColorDots } from '../product/ColorDots';
 import { Badge } from '../ui/Badge';
 import { EmptyState } from '../ui/EmptyState';
 import { Spinner } from '../ui/Spinner';
 import { Edit2, Trash2, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { formatPrice } from '../../config/brand';
 
 export interface ProductTableProps {
   products: Product[];
@@ -24,18 +25,18 @@ export const ProductTable: React.FC<ProductTableProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl border border-brand-border p-12 flex justify-center items-center">
-        <Spinner size="lg" label="Loading product catalogue..." />
+      <div className="bg-white rounded-lg border border-zinc-200 p-12 flex justify-center items-center">
+        <Spinner size="md" label="Loading catalogue..." />
       </div>
     );
   }
 
   if (products.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-brand-border p-6">
+      <div className="bg-white rounded-lg border border-zinc-200 p-6">
         <EmptyState
-          title="No products in catalogue"
-          description="No products match your current search or filter criteria."
+          title="No products found"
+          description="Try adjusting your search or filters."
           actionLabel={onClearFilters ? 'Reset Filters' : undefined}
           onAction={onClearFilters}
         />
@@ -44,24 +45,21 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-xl border border-brand-border overflow-hidden shadow-xs">
+    <div className="bg-white rounded-lg border border-zinc-200 overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-brand-dark">
-          {/* Table Header */}
-          <thead className="bg-[#FAF8F5] border-b border-brand-border text-xs uppercase font-semibold text-warm-gray tracking-wider">
+        <table className="w-full text-left text-sm text-zinc-900">
+          <thead className="bg-zinc-50 border-b border-zinc-200 text-xs uppercase font-semibold text-zinc-500">
             <tr>
-              <th scope="col" className="py-3.5 px-4 sm:px-6">Image</th>
-              <th scope="col" className="py-3.5 px-4 sm:px-6">Product ID</th>
-              <th scope="col" className="py-3.5 px-4 sm:px-6">Name</th>
-              <th scope="col" className="py-3.5 px-4 sm:px-6">Category</th>
-              <th scope="col" className="py-3.5 px-4 sm:px-6">Colors</th>
-              <th scope="col" className="py-3.5 px-4 sm:px-6">Status</th>
-              <th scope="col" className="py-3.5 px-4 sm:px-6 text-right">Actions</th>
+              <th scope="col" className="py-3 px-4">Photo</th>
+              <th scope="col" className="py-3 px-4">Name</th>
+              <th scope="col" className="py-3 px-4">Category</th>
+              <th scope="col" className="py-3 px-4">Price</th>
+              <th scope="col" className="py-3 px-4">Status</th>
+              <th scope="col" className="py-3 px-4 text-right">Actions</th>
             </tr>
           </thead>
 
-          {/* Table Body */}
-          <tbody className="divide-y divide-brand-border/60">
+          <tbody className="divide-y divide-zinc-200">
             {products.map((product) => {
               const thumbnail =
                 product.images && product.images.length > 0
@@ -69,13 +67,10 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                   : 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=300&auto=format&fit=crop';
 
               return (
-                <tr
-                  key={product.id || product.product_code}
-                  className="hover:bg-ivory/30 transition-colors"
-                >
+                <tr key={product.id} className="hover:bg-zinc-50 transition-colors">
                   {/* Thumbnail */}
-                  <td className="py-3 px-4 sm:px-6">
-                    <div className="w-12 h-12 rounded-lg overflow-hidden border border-brand-border bg-ivory flex-shrink-0">
+                  <td className="py-3 px-4">
+                    <div className="w-12 h-12 rounded overflow-hidden border border-zinc-200 bg-zinc-100 flex-shrink-0">
                       <img
                         src={thumbnail}
                         alt={product.name}
@@ -88,66 +83,56 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     </div>
                   </td>
 
-                  {/* Product Code */}
-                  <td className="py-3 px-4 sm:px-6 font-mono font-medium text-xs text-brand-dark">
-                    {product.product_code}
-                  </td>
-
-                  {/* Name */}
-                  <td className="py-3 px-4 sm:px-6">
-                    <p className="font-medium text-brand-dark max-w-[220px] truncate">
-                      {product.name}
-                    </p>
-                    {product.is_featured && (
-                      <span className="inline-block text-[10px] uppercase font-semibold text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded mt-0.5">
-                        Featured on homepage
+                  {/* Name & Code */}
+                  <td className="py-3 px-4">
+                    <p className="font-medium text-zinc-900">{product.name}</p>
+                    {product.product_code && (
+                      <span className="text-[11px] font-mono text-zinc-400">
+                        {product.product_code}
                       </span>
                     )}
                   </td>
 
                   {/* Category */}
-                  <td className="py-3 px-4 sm:px-6 text-warm-gray text-xs">
+                  <td className="py-3 px-4 text-zinc-500 text-xs">
                     {product.category}
                   </td>
 
-                  {/* Colors */}
-                  <td className="py-3 px-4 sm:px-6">
-                    <ColorDots colors={product.colors} size="sm" />
+                  {/* Price */}
+                  <td className="py-3 px-4 font-semibold text-zinc-900 text-xs sm:text-sm">
+                    {formatPrice(product.price)}
                   </td>
 
                   {/* Status */}
-                  <td className="py-3 px-4 sm:px-6">
+                  <td className="py-3 px-4">
                     <Badge variant={product.is_active ? 'active' : 'inactive'}>
                       {product.is_active ? 'Active' : 'Inactive'}
                     </Badge>
                   </td>
 
-                  {/* Actions (matching mockup) */}
-                  <td className="py-3 px-4 sm:px-6 text-right whitespace-nowrap">
+                  {/* Actions */}
+                  <td className="py-3 px-4 text-right whitespace-nowrap">
                     <div className="inline-flex items-center gap-3">
-                      {/* View public link */}
                       <Link
-                        to={`/products/${encodeURIComponent(product.product_code)}`}
+                        to={`/products/${encodeURIComponent(product.id || product.product_code || '')}`}
                         target="_blank"
-                        className="text-warm-gray hover:text-brand-dark p-1"
+                        className="text-zinc-400 hover:text-zinc-700 p-1"
                         title="View on store"
                       >
                         <Eye className="w-4 h-4" />
                       </Link>
 
-                      {/* Edit button */}
                       <button
                         onClick={() => onEdit(product)}
-                        className="text-xs font-semibold text-brand-dark hover:text-brand-brown hover:underline inline-flex items-center gap-1"
+                        className="text-xs font-semibold text-zinc-700 hover:text-[#D46A7E] inline-flex items-center gap-1"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                         <span>Edit</span>
                       </button>
 
-                      {/* Delete button */}
                       <button
                         onClick={() => onDelete(product)}
-                        className="text-xs font-semibold text-red-600 hover:text-red-700 hover:underline inline-flex items-center gap-1"
+                        className="text-xs font-semibold text-red-600 hover:text-red-700 inline-flex items-center gap-1"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         <span>Delete</span>

@@ -1,213 +1,271 @@
-import React, { useEffect, useState } from 'react';
+// src/pages/public/HomePage.tsx
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Sparkles, ShieldCheck, HeartHandshake } from 'lucide-react';
-import { Product, Category } from '../../types/product';
-import { fetchFeaturedProducts } from '../../lib/products';
+import { ArrowRight, Instagram, MessageCircle } from 'lucide-react';
+import { Product } from '../../types/product';
+import { fetchActiveProducts } from '../../lib/products';
 import { ProductCard } from '../../components/product/ProductCard';
-import { CATEGORY_METADATA, BRAND_TAGLINE, BRAND_SUBTITLE } from '../../config/constants';
 import { Spinner } from '../../components/ui/Spinner';
+import { BRAND_CONFIG, Category, getProductWhatsAppLink } from '../../config/brand';
+import { CATEGORY_METADATA } from '../../config/constants';
 
 export const HomePage: React.FC = () => {
-  const [featured, setFeatured] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'price-asc' | 'price-desc'>('newest');
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
-    async function loadFeatured() {
+    setIsLoading(true);
+
+    async function loadProducts() {
       try {
-        const data = await fetchFeaturedProducts(4);
+        const data = await fetchActiveProducts({
+          category: selectedCategory || undefined,
+          sort: sortOrder,
+        });
         if (isMounted) {
-          setFeatured(data);
+          setProducts(data);
         }
       } catch (err) {
-        console.warn('Could not load featured products:', err);
+        console.warn('Could not load products:', err);
       } finally {
         if (isMounted) {
           setIsLoading(false);
         }
       }
     }
-    loadFeatured();
+
+    loadProducts();
+
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [selectedCategory, sortOrder]);
 
-  const categoryHighlights: Category[] = ['Necklaces', 'Earrings', 'Bracelets', 'Bangles'];
+  const displayedProducts = useMemo(() => {
+    return products.slice(0, 12);
+  }, [products]);
+
+  const scrollToProducts = () => {
+    const el = document.getElementById('catalogue-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
-    <div className="space-y-16 sm:space-y-24">
-      {/* 1. Hero Section (matches reference mockup) */}
-      <section className="relative overflow-hidden bg-ivory/80 border-b border-brand-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[540px] lg:min-h-[620px] items-center py-12 lg:py-0">
-            {/* Left Hero Copy */}
-            <div className="lg:col-span-6 z-10 py-6 lg:py-16 space-y-6">
-              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-brand-brown">
-                Jewellery For Every You
-              </span>
-
-              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-brand-dark leading-[1.12]">
-                {BRAND_TAGLINE}
-              </h1>
-
-              <p className="text-base sm:text-lg text-warm-gray max-w-lg leading-relaxed">
-                {BRAND_SUBTITLE}
-              </p>
-
-              <div className="pt-2">
-                <Link
-                  to="/products"
-                  className="inline-flex items-center gap-3 px-7 py-3.5 rounded-md border border-brand-brown text-brand-brown font-medium text-sm hover:bg-brand-brown hover:text-white transition-all duration-300 shadow-xs"
-                >
-                  <span>Explore the collection</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-
-              {/* Value highlights matching mockup */}
-              <div className="pt-8 grid grid-cols-3 gap-4 border-t border-brand-border/60">
-                <div className="flex items-center gap-2.5">
-                  <Sparkles className="w-4 h-4 text-brand-brown flex-shrink-0" />
-                  <span className="text-xs font-medium text-brand-dark leading-tight">
-                    Modern Designs
-                  </span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <ShieldCheck className="w-4 h-4 text-brand-brown flex-shrink-0" />
-                  <span className="text-xs font-medium text-brand-dark leading-tight">
-                    Premium Finishes
-                  </span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <HeartHandshake className="w-4 h-4 text-brand-brown flex-shrink-0" />
-                  <span className="text-xs font-medium text-brand-dark leading-tight">
-                    Thoughtfully Curated
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Hero Image */}
-            <div className="lg:col-span-6 relative h-[360px] lg:h-full min-h-[420px] w-full mt-6 lg:mt-0 flex items-center justify-center">
-              <div className="relative w-full h-[90%] rounded-2xl overflow-hidden shadow-lg border border-brand-border">
-                <img
-                  src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=1400&auto=format&fit=crop"
-                  alt="AURELLE handcrafted gold jewellery collection"
-                  className="w-full h-full object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/20 via-transparent to-transparent pointer-events-none" />
-              </div>
+    <div className="space-y-12 sm:space-y-16">
+      {/* 3. Hero Banner: Clean full-width section with heading, subtext, and single 'Shop now' button */}
+      <section className="bg-zinc-100 border-b border-zinc-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 text-center">
+          <div className="max-w-2xl mx-auto space-y-4">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#D46A7E]">
+              {BRAND_CONFIG.shortName} Jewellery Collection
+            </span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900 leading-tight">
+              Handcrafted Artificial Jewellery for Everyday Sparkle
+            </h1>
+            <p className="text-sm sm:text-base text-zinc-600 max-w-lg mx-auto">
+              Explore trendy necklaces, earrings, bangles, and bracelets. Pick your favourites and place an order directly on WhatsApp.
+            </p>
+            <div className="pt-2">
+              <button
+                onClick={scrollToProducts}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#D46A7E] hover:bg-[#BC5568] text-white text-sm font-semibold transition-colors min-h-[44px]"
+              >
+                <span>Shop Now</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Shop by Category Section (matches reference mockup) */}
+      {/* 4. Shop by Category: Single row / mobile scrollable category tiles */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-baseline justify-between mb-8 sm:mb-10">
-          <div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-brand-dark">
-              Shop by category
-            </h2>
-            <p className="text-xs sm:text-sm text-warm-gray mt-1">
-              Find the perfect companion piece for your styling needs
-            </p>
-          </div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg sm:text-xl font-bold text-zinc-900">
+            Shop by Category
+          </h2>
           <Link
             to="/products"
-            className="text-xs sm:text-sm font-medium text-brand-brown hover:text-brand-dark inline-flex items-center gap-1.5 transition-colors"
+            className="text-xs sm:text-sm font-medium text-[#D46A7E] hover:underline"
           >
-            <span>View all categories</span>
-            <ArrowRight className="w-4 h-4" />
+            View All
           </Link>
         </div>
 
-        {/* 4 category cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {categoryHighlights.map((cat) => {
+        {/* Scrollable category tiles on mobile, grid on desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+          {BRAND_CONFIG.categories.map((cat: Category) => {
             const meta = CATEGORY_METADATA[cat];
+            const isSelected = selectedCategory === cat;
+
             return (
-              <div
+              <button
                 key={cat}
-                onClick={() => navigate(`/products?category=${encodeURIComponent(cat)}`)}
-                className="group cursor-pointer rounded-xl overflow-hidden border border-brand-border/80 bg-white shadow-xs hover:shadow-md transition-all duration-300"
+                type="button"
+                onClick={() => {
+                  setSelectedCategory(isSelected ? '' : cat);
+                  scrollToProducts();
+                }}
+                className={`group flex flex-col items-center text-center p-3 rounded-lg border transition-all ${
+                  isSelected
+                    ? 'border-[#D46A7E] bg-rose-50/50'
+                    : 'border-zinc-200 bg-white hover:border-zinc-300'
+                }`}
               >
-                <div className="relative aspect-square overflow-hidden bg-ivory">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-zinc-100 mb-2 border border-zinc-200">
                   <img
                     src={meta.image}
-                    alt={meta.title}
-                    className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500 ease-out"
+                    alt={`${cat} category`}
+                    loading="lazy"
+                    width={80}
+                    height={80}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                 </div>
-                <div className="p-4 flex items-center justify-between bg-white border-t border-brand-border/40">
-                  <span className="font-serif text-base sm:text-lg font-medium text-brand-dark group-hover:text-brand-brown transition-colors">
-                    {meta.title}
-                  </span>
-                  <ArrowRight className="w-4 h-4 text-warm-gray group-hover:text-brand-brown group-hover:translate-x-1 transition-all" />
-                </div>
-              </div>
+                <span className="text-xs sm:text-sm font-medium text-zinc-900">
+                  {cat}
+                </span>
+              </button>
             );
           })}
         </div>
       </section>
 
-      {/* 3. Featured Pieces Section (matches reference mockup) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-baseline justify-between mb-8 sm:mb-10">
-          <div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-brand-dark">
-              Featured pieces
-            </h2>
-            <p className="text-xs sm:text-sm text-warm-gray mt-1">
-              Our signature artificial jewellery pieces loved by our clientele
-            </p>
+      {/* 5. Product Grid Section */}
+      <section id="catalogue-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
+        {/* Header + Filter chips + Sort controls */}
+        <div className="space-y-4 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="text-lg sm:text-xl font-bold text-zinc-900">
+                {selectedCategory ? `${selectedCategory} Collection` : 'Featured Pieces'}
+              </h2>
+              <p className="text-xs text-zinc-500">
+                Showing {displayedProducts.length} {displayedProducts.length === 1 ? 'piece' : 'pieces'}
+              </p>
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="flex items-center gap-2">
+              <label htmlFor="sort-select" className="text-xs text-zinc-500">
+                Sort:
+              </label>
+              <select
+                id="sort-select"
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value as 'newest' | 'price-asc' | 'price-desc')}
+                className="text-xs rounded-md border border-zinc-200 bg-white px-2.5 py-1.5 text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#D46A7E]"
+              >
+                <option value="newest">Newest</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+              </select>
+            </div>
           </div>
-          <Link
-            to="/products"
-            className="text-xs sm:text-sm font-medium text-brand-brown hover:text-brand-dark inline-flex items-center gap-1.5 transition-colors"
-          >
-            <span>View all products</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+
+          {/* Category filter chips */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <button
+              onClick={() => setSelectedCategory('')}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors min-h-[36px] ${
+                !selectedCategory
+                  ? 'bg-zinc-900 text-white'
+                  : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50'
+              }`}
+            >
+              All Pieces
+            </button>
+            {BRAND_CONFIG.categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(selectedCategory === cat ? '' : cat)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors min-h-[36px] ${
+                  selectedCategory === cat
+                    ? 'bg-zinc-900 text-white'
+                    : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
+        {/* Product Grid: 2 cols mobile, 3 cols tablet, 4 cols desktop */}
         {isLoading ? (
           <div className="py-12 flex justify-center">
-            <Spinner size="lg" label="Curating featured pieces..." />
+            <Spinner size="md" label="Loading jewellery pieces..." />
+          </div>
+        ) : displayedProducts.length === 0 ? (
+          <div className="text-center py-12 px-4 rounded-lg border border-dashed border-zinc-200 bg-white">
+            <p className="text-sm font-medium text-zinc-800">No pieces found in this category.</p>
+            <button
+              onClick={() => setSelectedCategory('')}
+              className="mt-3 text-xs text-[#D46A7E] font-medium hover:underline"
+            >
+              Show all products
+            </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featured.map((product) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+            {displayedProducts.map((product) => (
               <ProductCard key={product.id || product.product_code} product={product} />
             ))}
           </div>
         )}
+
+        {/* 'View All' catalogue link if more products exist */}
+        <div className="mt-8 text-center">
+          <Link
+            to="/products"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-50 text-xs font-medium transition-colors"
+          >
+            <span>Browse Full Catalogue</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
       </section>
 
-      {/* 4. Catalogue Invitation Banner */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="rounded-2xl bg-ivory border border-brand-border p-8 sm:p-12 text-center relative overflow-hidden">
-          <div className="max-w-2xl mx-auto space-y-4">
-            <h3 className="font-serif text-2xl sm:text-3xl font-medium text-brand-dark">
-              Looking for something tailored?
-            </h3>
-            <p className="text-sm text-warm-gray">
-              We curate custom sets for weddings, celebrations, and boutique gifting. Send us an enquiry with your preferred design codes.
-            </p>
-            <div className="pt-2">
-              <Link
-                to="/products"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-brand-brown text-white text-xs uppercase font-semibold tracking-wider hover:bg-brand-dark transition-colors shadow-xs"
-              >
-                Browse Full Collection
-              </Link>
-            </div>
+      {/* 6. About Strip: 2-3 sentences about the brand and a link to Instagram */}
+      <section id="about" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-8 text-center space-y-4">
+          <h2 className="text-xl font-bold text-zinc-900">
+            About {BRAND_CONFIG.name}
+          </h2>
+          <p className="text-sm text-zinc-600 max-w-xl mx-auto leading-relaxed">
+            Welcome to {BRAND_CONFIG.name}. We craft and curate vibrant, lightweight artificial jewellery designed for everyday elegance and festive celebrations. Follow our journey and explore new arrivals directly on Instagram.
+          </p>
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href={BRAND_CONFIG.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-zinc-900 text-white text-xs font-medium hover:bg-zinc-800 transition-colors min-h-[44px]"
+            >
+              <Instagram className="w-4 h-4" />
+              <span>Follow {BRAND_CONFIG.instagramHandle}</span>
+            </a>
+            <a
+              href={getProductWhatsAppLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#25D366] text-white text-xs font-medium hover:bg-[#20bd5a] transition-colors min-h-[44px]"
+            >
+              <MessageCircle className="w-4 h-4 fill-current" />
+              <span>Chat on WhatsApp</span>
+            </a>
           </div>
         </div>
       </section>
+
+      {/* Contact anchor destination */}
+      <div id="contact" className="sr-only">Contact Section</div>
     </div>
   );
 };

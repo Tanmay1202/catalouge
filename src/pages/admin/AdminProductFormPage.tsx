@@ -96,20 +96,20 @@ export const AdminProductFormPage: React.FC = () => {
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-semibold text-brand-dark">
-              {isEdit ? 'Edit product' : 'Add new product'}
+            <h1 className="text-xl sm:text-2xl font-bold text-zinc-900">
+              {isEdit ? 'Edit Piece' : 'Add New Jewellery Piece'}
             </h1>
-            <p className="text-xs text-warm-gray">
+            <p className="text-xs text-zinc-500">
               {isEdit
-                ? `Modifying item code: ${product?.product_code}`
+                ? `Modifying item: ${product?.name}`
                 : 'Configure catalogue details and upload photography'}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Main Form Container (matching mockup) */}
-      <div className="bg-white rounded-xl border border-brand-border p-6 sm:p-8 shadow-xs">
+      {/* Main Form Container */}
+      <div className="bg-white rounded-lg border border-zinc-200 p-6 sm:p-8">
         <ProductForm
           initialProduct={product}
           onSubmit={handleSubmit}

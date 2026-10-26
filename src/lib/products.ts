@@ -1,9 +1,10 @@
+// src/lib/products.ts
 import { Product, ProductFormData, ProductFilterParams } from '../types/product';
 import { supabase, isSupabaseConfigured } from '../config/supabase';
 import { INITIAL_MOCK_PRODUCTS } from './mock-data';
 
 // Local storage key for in-memory / dev fallback persistence
-const MOCK_STORAGE_KEY = 'aurelle_mock_products_v1';
+const MOCK_STORAGE_KEY = 'ziba_mock_products_v2';
 
 function getLocalMockProducts(): Product[] {
   try {
@@ -28,17 +29,12 @@ function saveLocalMockProducts(products: Product[]): void {
 /**
  * Fetch active products for public catalogue browsing
  */
-export async function fetchActiveProducts(filters?: {
-  category?: string;
-  search?: string;
-  color?: string;
-}): Promise<Product[]> {
+export async function fetchActiveProducts(filters?: ProductFilterParams): Promise<Product[]> {
   if (isSupabaseConfigured && supabase) {
     let query = supabase
       .from('products')
       .select('*')
-      .eq('is_active', true)
-      .order('created_at', { ascending: false });
+      .eq('is_active', true);
 
     if (filters?.category) {
       query = query.eq('category', filters.category);
@@ -49,8 +45,12 @@ export async function fetchActiveProducts(filters?: {
       query = query.or(`name.ilike.%${term}%,product_code.ilike.%${term}%`);
     }
 
-    if (filters?.color) {
-      query = query.contains('colors', [filters.color]);
+    if (filters?.sort === 'price-asc') {
+      query = query.order('price', { ascending: true });
+    } else if (filters?.sort === 'price-desc') {
+      query = query.order('price', { ascending: false });
+    } else {
+      query = query.order('created_at', { ascending: false });
     }
 
     const { data, error } = await query;
@@ -73,12 +73,18 @@ export async function fetchActiveProducts(filters?: {
     list = list.filter(
       (p) =>
         p.name.toLowerCase().includes(q) ||
-        p.product_code.toLowerCase().includes(q)
+        (p.product_code && p.product_code.toLowerCase().includes(q))
     );
   }
 
-  if (filters?.color) {
-    list = list.filter((p) => p.colors.includes(filters.color!));
+  if (filters?.sort === 'price-asc') {
+    list = [...list].sort((a, b) => a.price - b.price);
+  } else if (filters?.sort === 'price-desc') {
+    list = [...list].sort((a, b) => b.price - a.price);
+  } else {
+    list = [...list].sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
   }
 
   return list;
@@ -87,7 +93,7 @@ export async function fetchActiveProducts(filters?: {
 /**
  * Fetch featured products for the homepage
  */
-export async function fetchFeaturedProducts(limit = 4): Promise<Product[]> {
+export async function fetchFeaturedProducts(limit = 8): Promise<Product[]> {
   if (isSupabaseConfigured && supabase) {
     const { data, error } = await supabase
       .from('products')
@@ -112,30 +118,36 @@ export async function fetchFeaturedProducts(limit = 4): Promise<Product[]> {
 }
 
 /**
- * Fetch a single product by unique product code
+ * Fetch a single product by unique ID or code
  */
-export async function fetchProductByCode(code: string): Promise<Product | null> {
-  const cleanCode = decodeURIComponent(code).trim();
+export async function fetchProductByIdOrCode(identifier: string): Promise<Product | null> {
+  const cleanId = decodeURIComponent(identifier).trim();
 
   if (isSupabaseConfigured && supabase) {
+    // Try matching by id or product_code
     const { data, error } = await supabase
       .from('products')
       .select('*')
-      .eq('product_code', cleanCode)
+      .or(`id.eq.${cleanId},product_code.eq.${cleanId}`)
       .maybeSingle();
 
     if (error) {
-      console.error('Error fetching product by code:', error);
+      console.error('Error fetching product by identifier:', error);
       throw error;
     }
     return data as Product | null;
   }
 
   const found = getLocalMockProducts().find(
-    (p) => p.product_code.toLowerCase() === cleanCode.toLowerCase()
+    (p) =>
+      p.id.toLowerCase() === cleanId.toLowerCase() ||
+      (p.product_code && p.product_code.toLowerCase() === cleanId.toLowerCase())
   );
   return found || null;
 }
+
+/** Backward compatibility alias */
+export const fetchProductByCode = fetchProductByIdOrCode;
 
 /**
  * Fetch all products for the admin dashboard (both active and inactive)
@@ -187,7 +199,7 @@ export async function fetchAllAdminProducts(filters?: ProductFilterParams): Prom
     list = list.filter(
       (p) =>
         p.name.toLowerCase().includes(q) ||
-        p.product_code.toLowerCase().includes(q)
+        (p.product_code && p.product_code.toLowerCase().includes(q))
     );
   }
 
@@ -201,6 +213,7 @@ export async function checkProductCodeExists(
   code: string,
   excludeId?: string
 ): Promise<boolean> {
+  if (!code) return false;
   const cleanCode = code.trim();
 
   if (isSupabaseConfigured && supabase) {
@@ -224,6 +237,7 @@ export async function checkProductCodeExists(
   const list = getLocalMockProducts();
   return list.some(
     (p) =>
+      p.product_code &&
       p.product_code.toLowerCase() === cleanCode.toLowerCase() &&
       (!excludeId || p.id !== excludeId)
   );
@@ -235,12 +249,15 @@ export async function checkProductCodeExists(
 export async function createProduct(formData: ProductFormData): Promise<Product> {
   const newProduct: Product = {
     id: isSupabaseConfigured ? undefined as unknown as string : `prod-${Date.now()}`,
-    product_code: formData.product_code.trim(),
+    product_code: formData.product_code?.trim() || `ZB-${Date.now().toString().slice(-4)}`,
     name: formData.name.trim(),
     category: formData.category,
+    price: formData.price || 0,
+    original_price: formData.original_price,
     description: formData.description.trim(),
-    colors: formData.colors,
+    colors: formData.colors || [],
     images: formData.images || [],
+    in_stock: formData.in_stock !== undefined ? formData.in_stock : true,
     is_active: formData.is_active,
     is_featured: formData.is_featured,
     created_at: new Date().toISOString(),
@@ -254,6 +271,8 @@ export async function createProduct(formData: ProductFormData): Promise<Product>
         product_code: newProduct.product_code,
         name: newProduct.name,
         category: newProduct.category,
+        price: newProduct.price,
+        original_price: newProduct.original_price,
         description: newProduct.description,
         colors: newProduct.colors,
         images: newProduct.images,
@@ -288,6 +307,8 @@ export async function updateProduct(
     if (formData.product_code !== undefined) updatePayload.product_code = formData.product_code.trim();
     if (formData.name !== undefined) updatePayload.name = formData.name.trim();
     if (formData.category !== undefined) updatePayload.category = formData.category;
+    if (formData.price !== undefined) updatePayload.price = formData.price;
+    if (formData.original_price !== undefined) updatePayload.original_price = formData.original_price;
     if (formData.description !== undefined) updatePayload.description = formData.description.trim();
     if (formData.colors !== undefined) updatePayload.colors = formData.colors;
     if (formData.images !== undefined) updatePayload.images = formData.images;

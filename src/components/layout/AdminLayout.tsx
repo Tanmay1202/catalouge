@@ -76,7 +76,7 @@ export const AdminLayout: React.FC = () => {
               <div className="hidden md:block text-left">
                 <p className="text-xs font-semibold text-brand-dark">Admin</p>
                 <p className="text-[11px] text-warm-gray truncate max-w-[150px]">
-                  {admin?.email || 'admin@aurelle.com'}
+                  {admin?.email || 'admin@ziba.com'}
                 </p>
               </div>
             </div>

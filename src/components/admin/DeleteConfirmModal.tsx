@@ -34,12 +34,14 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
           </div>
         </div>
 
-        <div className="p-4 rounded-lg bg-ivory border border-brand-border space-y-1.5 text-sm">
-          <p className="text-xs uppercase font-mono tracking-wider text-warm-gray">
-            Item Code: <span className="font-semibold text-brand-dark">{product.product_code}</span>
-          </p>
-          <p className="font-serif text-base font-semibold text-brand-dark">{product.name}</p>
-          <p className="text-xs text-warm-gray">Category: {product.category}</p>
+        <div className="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200 space-y-1 text-xs">
+          {product.product_code && (
+            <p className="font-mono text-zinc-500">
+              Code: <span className="font-semibold text-zinc-900">{product.product_code}</span>
+            </p>
+          )}
+          <p className="text-sm font-semibold text-zinc-900">{product.name}</p>
+          <p className="text-zinc-500">Category: {product.category}</p>
         </div>
 
         <div className="flex items-center justify-end gap-3 pt-3 border-t border-brand-border">

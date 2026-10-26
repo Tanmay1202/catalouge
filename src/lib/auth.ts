@@ -6,7 +6,7 @@ export interface AdminUser {
   role: 'admin';
 }
 
-const MOCK_AUTH_STORAGE_KEY = 'aurelle_mock_admin_session';
+const MOCK_AUTH_STORAGE_KEY = 'ziba_mock_admin_session';
 
 /**
  * Sign in with email and password
@@ -43,7 +43,7 @@ export async function signInAdmin(email: string, password: string): Promise<Admi
   }
 
   // Fallback for dev / testing prior to setting up Supabase
-  if (cleanEmail === 'admin@aurelle.com' && password === 'admin123') {
+  if (cleanEmail === 'admin@ziba.com' && password === 'admin123') {
     const mockUser: AdminUser = {
       id: 'mock-admin-uuid-001',
       email: cleanEmail,
@@ -53,7 +53,7 @@ export async function signInAdmin(email: string, password: string): Promise<Admi
     return mockUser;
   }
 
-  throw new Error('Invalid email or password. (Dev hint: use admin@aurelle.com / admin123)');
+  throw new Error('Invalid email or password. (Dev hint: use admin@ziba.com / admin123)');
 }
 
 /**

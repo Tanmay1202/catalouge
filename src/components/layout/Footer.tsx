@@ -1,122 +1,54 @@
+// src/components/layout/Footer.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, ShieldCheck, Sparkles, HeartHandshake } from 'lucide-react';
-import { BRAND_NAME, BRAND_TAGLINE, CATEGORIES, getWhatsAppLink, getWhatsAppNumber } from '../../config/constants';
+import { MessageCircle, Instagram } from 'lucide-react';
+import { BRAND_CONFIG, getProductWhatsAppLink } from '../../config/brand';
 
 export const Footer: React.FC = () => {
-  const whatsappNumber = getWhatsAppNumber();
-
   return (
-    <footer className="bg-ivory border-t border-brand-border mt-20">
-      {/* Brand value propositions banner */}
-      <div className="border-b border-brand-border/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 text-center md:text-left">
-            <div className="flex items-center gap-4 justify-center md:justify-start">
-              <div className="w-10 h-10 rounded-full bg-cream border border-brand-border flex items-center justify-center text-brand-brown">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-serif text-sm font-semibold text-brand-dark">Modern Designs</h4>
-                <p className="text-xs text-warm-gray mt-0.5">Contemporary silhouettes crafted with precision</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 justify-center md:justify-start">
-              <div className="w-10 h-10 rounded-full bg-cream border border-brand-border flex items-center justify-center text-brand-brown">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-serif text-sm font-semibold text-brand-dark">Premium Finishes</h4>
-                <p className="text-xs text-warm-gray mt-0.5">Durable polish & radiant artificial stone settings</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 justify-center md:justify-start">
-              <div className="w-10 h-10 rounded-full bg-cream border border-brand-border flex items-center justify-center text-brand-brown">
-                <HeartHandshake className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-serif text-sm font-semibold text-brand-dark">Thoughtfully Curated</h4>
-                <p className="text-xs text-warm-gray mt-0.5">Selected pieces for festive and daily elegance</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main footer navigation */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand info */}
-          <div className="md:col-span-2 space-y-4">
-            <span className="font-serif text-2xl font-bold tracking-wider text-brand-dark">
-              {BRAND_NAME}
-            </span>
-            <p className="text-sm text-warm-gray max-w-sm">
-              {BRAND_TAGLINE} A bespoke catalogue of artificial jewellery created to add understated charm to your personal style.
+    <footer className="bg-white border-t border-zinc-200 mt-16 py-8 text-sm text-zinc-600">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          {/* Brand & Tagline */}
+          <div className="space-y-1">
+            <Link to="/" className="text-lg font-bold text-zinc-900 hover:text-[#D46A7E] transition-colors">
+              {BRAND_CONFIG.name}
+            </Link>
+            <p className="text-xs text-zinc-500">
+              {BRAND_CONFIG.tagline}
             </p>
-            <div className="pt-2">
-              <a
-                href={getWhatsAppLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#25D366]/15 text-[#128C7E] hover:bg-[#25D366]/25 text-xs font-semibold uppercase tracking-wider transition-colors"
-              >
-                <MessageCircle className="w-4 h-4" />
-                Enquire on WhatsApp
-              </a>
-            </div>
           </div>
 
-          {/* Catalogue categories */}
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-warm-gray mb-3">
-              Categories
-            </h4>
-            <ul className="space-y-2 text-sm">
-              {CATEGORIES.map((cat) => (
-                <li key={cat}>
-                  <Link
-                    to={`/products?category=${encodeURIComponent(cat)}`}
-                    className="text-brand-dark/80 hover:text-brand-brown transition-colors"
-                  >
-                    {cat}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* Social & Contact Links */}
+          <div className="flex items-center gap-4">
+            <a
+              href={BRAND_CONFIG.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-zinc-700 hover:text-pink-600 hover:bg-zinc-50 border border-zinc-200 transition-colors min-h-[44px]"
+            >
+              <Instagram className="w-4 h-4" />
+              <span>Instagram ({BRAND_CONFIG.instagramHandle})</span>
+            </a>
+
+            <a
+              href={getProductWhatsAppLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-[#128C7E] bg-[#25D366]/10 hover:bg-[#25D366]/20 transition-colors min-h-[44px]"
+            >
+              <MessageCircle className="w-4 h-4 fill-current" />
+              <span>WhatsApp Enquiries</span>
+            </a>
           </div>
 
-          {/* Quick Enquiries */}
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-warm-gray mb-3">
-              Enquiries & Assistance
-            </h4>
-            <p className="text-xs text-warm-gray leading-relaxed mb-3">
-              Interested in any item? Click the WhatsApp enquiry button on any product card or send us an item code directly.
-            </p>
-            {whatsappNumber && (
-              <p className="text-xs font-medium text-brand-dark">
-                WhatsApp: <span className="text-brand-brown font-mono">+{whatsappNumber}</span>
-              </p>
-            )}
-            <div className="mt-4 pt-4 border-t border-brand-border/60">
-              <Link
-                to="/admin/login"
-                className="text-xs text-warm-gray/70 hover:text-brand-dark transition-colors inline-flex items-center gap-1"
-              >
-                <span>Store Admin Login</span>
-                <span>→</span>
-              </Link>
-            </div>
+          {/* Copyright & Admin Link */}
+          <div className="text-xs text-zinc-400 space-y-1">
+            <p>© {new Date().getFullYear()} {BRAND_CONFIG.name}. All rights reserved.</p>
+            <Link to="/admin/login" className="hover:text-zinc-600 underline">
+              Admin Login
+            </Link>
           </div>
-        </div>
-
-        {/* Bottom copyright */}
-        <div className="mt-12 pt-6 border-t border-brand-border flex flex-col sm:flex-row items-center justify-between text-xs text-warm-gray gap-4">
-          <p>© {new Date().getFullYear()} {BRAND_NAME} Jewellery. All rights reserved.</p>
-          <p className="tracking-wide">Catalogue showcase & bespoke enquiries</p>
         </div>
       </div>
     </footer>

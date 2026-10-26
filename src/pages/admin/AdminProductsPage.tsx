@@ -83,14 +83,14 @@ export const AdminProductsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Page Header matching mockup */}
+      {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-semibold text-brand-dark">
-            Product catalogue
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-900">
+            Product Catalogue
           </h1>
-          <p className="text-xs sm:text-sm text-warm-gray mt-0.5">
-            Manage jewellery pieces, image galleries, and catalogue visibility
+          <p className="text-xs sm:text-sm text-zinc-500 mt-0.5">
+            Manage jewellery pieces, prices, and catalogue visibility
           </p>
         </div>
 

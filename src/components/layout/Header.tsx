@@ -65,10 +65,10 @@ export const Header: React.FC = () => {
                   </div>
                 )}
                 <div className="flex flex-col">
-                  <span className="text-lg sm:text-2xl font-bold tracking-tight text-[#2B1A15] group-hover:text-[#C47A53] transition-colors leading-none">
+                  <span className="font-serif text-xl sm:text-2xl font-bold tracking-wide text-[#2B1A15] group-hover:text-[#C47A53] transition-colors leading-none">
                     Ziba
                   </span>
-                  <span className="text-[10px] sm:text-xs font-medium tracking-widest uppercase text-[#C47A53] mt-0.5">
+                  <span className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-[#C47A53] mt-1">
                     By Nidhi
                   </span>
                 </div>

@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
               />
             )}
             <div className="space-y-0.5 text-left">
-              <Link to="/" className="text-base font-bold text-[#2B1A15] hover:text-[#C47A53] transition-colors leading-none block">
+              <Link to="/" className="text-base font-bold font-serif tracking-wide text-[#2B1A15] hover:text-[#C47A53] transition-colors leading-none block">
                 {BRAND_CONFIG.name}
               </Link>
               <p className="text-xs text-[#7D6B63]">

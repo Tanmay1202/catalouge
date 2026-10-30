@@ -27,7 +27,7 @@ Mobile-first catalogue website for **Ziba by Nidhi** (@ziba_by_nidhi_jewellery) 
 - Text: deep warm espresso `#2B1A15`, warm taupe `#7D6B63`
 - Accent: warm copper/rose-gold `#C47A53`, peach watercolor tint `#F7ECE4`
 - Borders: `#EBDCD2` (soft copper-sand)
-- Font: Single sans-serif (`Inter`) for all text and logo text fallback
+- Font: Sans-serif (`Inter`) for body/UI text; stylized serif (`Playfair Display`) for the brand wordmark alongside the logo
 
 ## Verification After Changes
 Always run: `npx tsc -b && npm run build`

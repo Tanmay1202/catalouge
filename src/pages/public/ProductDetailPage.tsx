@@ -6,6 +6,7 @@ import { fetchProductByIdOrCode } from '../../lib/products';
 import { Spinner } from '../../components/ui/Spinner';
 import { MessageCircle, ArrowLeft } from 'lucide-react';
 import { getProductWhatsAppLink, BRAND_CONFIG } from '../../config/brand';
+import { VideoThumbnail } from '../../components/product/VideoThumbnail';
 
 export const ProductDetailPage: React.FC = () => {
   const { productCode } = useParams<{ productCode: string }>();
@@ -130,6 +131,20 @@ export const ProductDetailPage: React.FC = () => {
                   <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
+            </div>
+          )}
+
+          {/* Video links: clickable play-button thumbnails */}
+          {product.video_links && product.video_links.length > 0 && (
+            <div className="space-y-1.5">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-[#7D6B63]">
+                Watch Videos
+              </p>
+              <div className="flex items-center gap-2.5 overflow-x-auto pb-1 no-scrollbar">
+                {product.video_links.map((url, idx) => (
+                  <VideoThumbnail key={idx} url={url} size="strip" />
+                ))}
+              </div>
             </div>
           )}
         </div>

@@ -8,7 +8,9 @@ import { ImageUploader } from './ImageUploader';
 import { checkProductCodeExists } from '../../lib/products';
 import { useCategories } from '../../lib/categories';
 import { useColors } from '../../lib/colors';
-import { Plus, X, Check } from 'lucide-react';
+import { isSupportedVideoUrl } from '../../lib/videoUtils';
+import { VideoThumbnail } from '../product/VideoThumbnail';
+import { Plus, X, Check, Link as LinkIcon } from 'lucide-react';
 
 export interface ProductFormProps {
   initialProduct?: Product | null;
@@ -31,6 +33,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [newCategoryInput, setNewCategoryInput] = useState('');
   const [customColorInput, setCustomColorInput] = useState('');
+  const [videoLinkInput, setVideoLinkInput] = useState('');
+  const [videoLinkError, setVideoLinkError] = useState('');
 
   const [formData, setFormData] = useState<ProductFormData>({
     product_code: initialProduct?.product_code || '',
@@ -39,6 +43,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     description: initialProduct?.description || '',
     colors: initialProduct?.colors || ['Gold Tone'],
     images: initialProduct?.images || [],
+    video_links: initialProduct?.video_links || [],
     in_stock: initialProduct?.in_stock !== undefined ? initialProduct.in_stock : true,
     is_active: initialProduct ? initialProduct.is_active : true,
     is_featured: initialProduct ? initialProduct.is_featured : false,
@@ -89,6 +94,29 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         : { ...prev, colors: [...current, trimmed] };
     });
     setCustomColorInput('');
+  };
+
+  // Video link handlers
+  const handleAddVideoLink = () => {
+    const trimmed = videoLinkInput.trim();
+    if (!trimmed) return;
+    if (!isSupportedVideoUrl(trimmed)) {
+      setVideoLinkError('Only YouTube and Instagram Reel links are supported.');
+      return;
+    }
+    setFormData((prev) => ({
+      ...prev,
+      video_links: [...(prev.video_links || []), trimmed],
+    }));
+    setVideoLinkInput('');
+    setVideoLinkError('');
+  };
+
+  const handleRemoveVideoLink = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      video_links: (prev.video_links || []).filter((_, i) => i !== index),
+    }));
   };
 
   const validate = async (): Promise<boolean> => {
@@ -299,6 +327,79 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 <Plus className="w-3.5 h-3.5 mr-1" />
                 <span>Add Color</span>
               </Button>
+            </div>
+          </div>
+
+          {/* Video Links */}
+          <div className="p-4 rounded-lg border border-[#EBDCD2] bg-white space-y-3">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700">
+                Video Links <span className="normal-case text-zinc-400 font-normal">(optional)</span>
+              </label>
+              <p className="text-[11px] text-zinc-500 mt-0.5">
+                Paste YouTube or Instagram Reel links. Customers will see a clickable preview on the product page.
+              </p>
+            </div>
+
+            {/* Added video links list */}
+            {formData.video_links && formData.video_links.length > 0 && (
+              <div className="space-y-2">
+                {formData.video_links.map((link, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 p-2 rounded-md bg-[#FAF6F2] border border-[#EBDCD2]"
+                  >
+                    <VideoThumbnail url={link} size="strip" />
+                    <span className="flex-1 text-[11px] text-[#2B1A15] truncate min-w-0">{link}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveVideoLink(idx)}
+                      className="text-zinc-400 hover:text-red-600 transition-colors flex-shrink-0"
+                      aria-label="Remove video link"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Add new video link input */}
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <LinkIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 pointer-events-none" />
+                  <input
+                    type="url"
+                    placeholder="Paste YouTube or Instagram Reel URL..."
+                    value={videoLinkInput}
+                    onChange={(e) => {
+                      setVideoLinkInput(e.target.value);
+                      if (videoLinkError) setVideoLinkError('');
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddVideoLink();
+                      }
+                    }}
+                    className="w-full text-xs rounded-md border border-[#EBDCD2] pl-8 pr-2.5 py-1.5 text-[#2B1A15] placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-[#C47A53]"
+                  />
+                </div>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={handleAddVideoLink}
+                  className="shrink-0"
+                >
+                  <Plus className="w-3.5 h-3.5 mr-1" />
+                  <span>Add</span>
+                </Button>
+              </div>
+              {videoLinkError && (
+                <p className="text-[11px] text-red-600">{videoLinkError}</p>
+              )}
             </div>
           </div>
 

@@ -12,6 +12,7 @@ export interface Product {
   images: string[];
   description: string;
   colors?: string[];
+  video_links?: string[];
   product_code?: string;
   in_stock?: boolean;
   is_active: boolean;
@@ -25,6 +26,7 @@ export interface ProductFormData {
   category: Category;
   description: string;
   colors?: string[];
+  video_links?: string[];
   product_code?: string;
   images?: string[];
   in_stock?: boolean;

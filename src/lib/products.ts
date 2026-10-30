@@ -255,6 +255,7 @@ export async function createProduct(formData: ProductFormData): Promise<Product>
     description: formData.description.trim(),
     colors: formData.colors || [],
     images: formData.images || [],
+    video_links: formData.video_links || [],
     in_stock: formData.in_stock !== undefined ? formData.in_stock : true,
     is_active: formData.is_active,
     is_featured: formData.is_featured,
@@ -272,6 +273,7 @@ export async function createProduct(formData: ProductFormData): Promise<Product>
         description: newProduct.description,
         colors: newProduct.colors,
         images: newProduct.images,
+        video_links: newProduct.video_links || [],
         is_active: newProduct.is_active,
         is_featured: newProduct.is_featured,
       })
@@ -306,6 +308,7 @@ export async function updateProduct(
     if (formData.description !== undefined) updatePayload.description = formData.description.trim();
     if (formData.colors !== undefined) updatePayload.colors = formData.colors;
     if (formData.images !== undefined) updatePayload.images = formData.images;
+    if (formData.video_links !== undefined) updatePayload.video_links = formData.video_links;
     if (formData.is_active !== undefined) updatePayload.is_active = formData.is_active;
     if (formData.is_featured !== undefined) updatePayload.is_featured = formData.is_featured;
 

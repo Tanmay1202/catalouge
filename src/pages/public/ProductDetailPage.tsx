@@ -134,19 +134,7 @@ export const ProductDetailPage: React.FC = () => {
             </div>
           )}
 
-          {/* Video links: clickable play-button thumbnails */}
-          {product.video_links && product.video_links.length > 0 && (
-            <div className="space-y-1.5">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-[#7D6B63]">
-                Watch Videos
-              </p>
-              <div className="flex items-center gap-2.5 overflow-x-auto pb-1 no-scrollbar">
-                {product.video_links.map((url, idx) => (
-                  <VideoThumbnail key={idx} url={url} size="strip" />
-                ))}
-              </div>
-            </div>
-          )}
+
         </div>
 
         {/* Right Column: Details & WhatsApp Action */}
@@ -189,6 +177,23 @@ export const ProductDetailPage: React.FC = () => {
               {product.description || 'Handcrafted artificial jewellery designed for everyday sparkle and festive occasions.'}
             </p>
           </div>
+
+          {/* Video Links */}
+          {product.video_links && product.video_links.length > 0 && (
+            <div className="border-t border-[#EBDCD2] pt-4 space-y-3">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-[#7D6B63]">
+                Watch Videos
+              </h2>
+              <div className="grid grid-cols-2 gap-3">
+                {product.video_links.map((url, idx) => (
+                  <VideoThumbnail key={idx} url={url} size="card" />
+                ))}
+              </div>
+              <p className="text-[11px] text-[#7D6B63]">
+                Tap a thumbnail to watch — opens in a new tab.
+              </p>
+            </div>
+          )}
 
           {/* WhatsApp Primary Order CTA */}
           <div className="pt-2 space-y-2">

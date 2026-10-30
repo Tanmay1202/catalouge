@@ -10,8 +10,6 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     product_code: 'ZB-NK-01',
     name: 'Floral Kundan & Pearl Choker Set',
     category: 'Necklaces',
-    price: 1499,
-    original_price: 1899,
     description: 'Handcrafted floral motif choker with faux pearls and sparkling artificial stones. Comes with matching earrings.',
     colors: ['Gold Tone', 'Silver Tone'],
     images: [
@@ -28,8 +26,6 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     product_code: 'ZB-ER-02',
     name: 'Teardrop Crystal Chandbali Earrings',
     category: 'Earrings',
-    price: 799,
-    original_price: 999,
     description: 'Delicate artificial crystal chandbali earrings featuring tiered drops and lightweight festive finish.',
     colors: ['Gold Tone', 'Rose Gold Tone'],
     images: [
@@ -45,7 +41,6 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     product_code: 'ZB-RG-03',
     name: 'Solitaire Bloom Adjustable Ring',
     category: 'Rings',
-    price: 549,
     description: 'Minimal everyday artificial stone ring with an adjustable band for easy, comfortable wear.',
     colors: ['Gold Tone', 'Silver Tone', 'Rose Gold Tone'],
     images: [
@@ -61,8 +56,6 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     product_code: 'ZB-BR-04',
     name: 'Faux Pearl Charm Link Bracelet',
     category: 'Bracelets',
-    price: 699,
-    original_price: 899,
     description: 'Chic artificial pearl charm bracelet on an adjustable metallic link chain. Perfect for daily styling.',
     colors: ['Gold Tone', 'Silver Tone'],
     images: [
@@ -78,8 +71,6 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     product_code: 'ZB-BN-05',
     name: 'Classic Studded Kada Bangles (Set of 2)',
     category: 'Bangles',
-    price: 1199,
-    original_price: 1499,
     description: 'Set of two artificial stone-studded openable kada bangles with smooth inner lining for everyday luxury look.',
     colors: ['Gold Tone', 'Antique Finish'],
     images: [
@@ -95,7 +86,6 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     product_code: 'ZB-NK-06',
     name: 'Delicate Layered Pendant Chain',
     category: 'Necklaces',
-    price: 899,
     description: 'Modern double-layer artificial chain necklace featuring dainty geometric charms.',
     colors: ['Gold Tone', 'Rose Gold Tone'],
     images: [
@@ -111,7 +101,6 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     product_code: 'ZB-ER-07',
     name: 'Oxidised Silver-Tone Floral Studs',
     category: 'Earrings',
-    price: 499,
     description: 'Handcrafted bohemian style oxidised studs for everyday ethnic wear.',
     colors: ['Oxidised'],
     images: [
@@ -127,7 +116,6 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     product_code: 'ZB-RG-08',
     name: 'Stacked Pavé Band Set',
     category: 'Rings',
-    price: 749,
     description: 'Set of three artificial stone-studded stackable bands in polished finish.',
     colors: ['Gold Tone', 'Silver Tone'],
     images: [

@@ -45,10 +45,10 @@ export async function fetchActiveProducts(filters?: ProductFilterParams): Promis
       query = query.or(`name.ilike.%${term}%,product_code.ilike.%${term}%`);
     }
 
-    if (filters?.sort === 'price-asc') {
-      query = query.order('price', { ascending: true });
-    } else if (filters?.sort === 'price-desc') {
-      query = query.order('price', { ascending: false });
+    if (filters?.sort === 'name-asc') {
+      query = query.order('name', { ascending: true });
+    } else if (filters?.sort === 'name-desc') {
+      query = query.order('name', { ascending: false });
     } else {
       query = query.order('created_at', { ascending: false });
     }
@@ -77,10 +77,10 @@ export async function fetchActiveProducts(filters?: ProductFilterParams): Promis
     );
   }
 
-  if (filters?.sort === 'price-asc') {
-    list = [...list].sort((a, b) => a.price - b.price);
-  } else if (filters?.sort === 'price-desc') {
-    list = [...list].sort((a, b) => b.price - a.price);
+  if (filters?.sort === 'name-asc') {
+    list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+  } else if (filters?.sort === 'name-desc') {
+    list = [...list].sort((a, b) => b.name.localeCompare(a.name));
   } else {
     list = [...list].sort(
       (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -252,8 +252,6 @@ export async function createProduct(formData: ProductFormData): Promise<Product>
     product_code: formData.product_code?.trim() || `ZB-${Date.now().toString().slice(-4)}`,
     name: formData.name.trim(),
     category: formData.category,
-    price: formData.price || 0,
-    original_price: formData.original_price,
     description: formData.description.trim(),
     colors: formData.colors || [],
     images: formData.images || [],
@@ -271,8 +269,6 @@ export async function createProduct(formData: ProductFormData): Promise<Product>
         product_code: newProduct.product_code,
         name: newProduct.name,
         category: newProduct.category,
-        price: newProduct.price,
-        original_price: newProduct.original_price,
         description: newProduct.description,
         colors: newProduct.colors,
         images: newProduct.images,
@@ -307,8 +303,6 @@ export async function updateProduct(
     if (formData.product_code !== undefined) updatePayload.product_code = formData.product_code.trim();
     if (formData.name !== undefined) updatePayload.name = formData.name.trim();
     if (formData.category !== undefined) updatePayload.category = formData.category;
-    if (formData.price !== undefined) updatePayload.price = formData.price;
-    if (formData.original_price !== undefined) updatePayload.original_price = formData.original_price;
     if (formData.description !== undefined) updatePayload.description = formData.description.trim();
     if (formData.colors !== undefined) updatePayload.colors = formData.colors;
     if (formData.images !== undefined) updatePayload.images = formData.images;

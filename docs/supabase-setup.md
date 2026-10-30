@@ -26,6 +26,9 @@ Copy the entire content of [`002_rls_policies.sql`](file:///D:/catalouge/docs/mi
 ### Step 2.3: Set Up Storage Bucket & Policies
 Copy the entire content of [`003_storage_policies.sql`](file:///D:/catalouge/docs/migrations/003_storage_policies.sql) and paste it into a new query. Click **Run**.
 
+### Step 2.4: (If updating existing database) Remove Pricing Constraints
+If your `products` table was already created with a `NOT NULL` constraint on `price`, run [`004_remove_pricing.sql`](file:///D:/catalouge/docs/migrations/004_remove_pricing.sql) to remove price constraints.
+
 ---
 
 ## 3. Create Administrator Account

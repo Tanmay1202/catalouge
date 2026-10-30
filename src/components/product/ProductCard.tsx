@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle } from 'lucide-react';
 import { Product } from '../../types/product';
-import { formatPrice, getProductWhatsAppLink, BRAND_CONFIG } from '../../config/brand';
+import { getProductWhatsAppLink, BRAND_CONFIG } from '../../config/brand';
 
 export interface ProductCardProps {
   product: Product;
@@ -33,7 +33,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
       }
     }
 
-    const link = getProductWhatsAppLink(product.name, product.price, productUrl);
+    const link = getProductWhatsAppLink(product.name, undefined, productUrl);
     window.open(link, '_blank', 'noopener,noreferrer');
   };
 
@@ -70,18 +70,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           >
             {product.name}
           </Link>
-
-          {/* Price with Indian digit grouping and optional strikethrough original price */}
-          <div className="mt-1.5 flex items-baseline gap-2">
-            <span className="text-base font-bold text-[#2B1A15]">
-              {formatPrice(product.price)}
-            </span>
-            {product.original_price && product.original_price > product.price && (
-              <span className="text-xs text-[#7D6B63]/70 line-through">
-                {formatPrice(product.original_price)}
-              </span>
-            )}
-          </div>
         </div>
 
         {/* Primary Action Button: Enquire on WhatsApp */}
@@ -92,9 +80,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           className="w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 rounded-md bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-semibold transition-colors min-h-[44px] shadow-2xs"
         >
           <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current flex-shrink-0" />
-          <span>
-            <span className="hidden sm:inline">Enquire on </span>WhatsApp
-          </span>
+          <span>Enquire on WhatsApp</span>
         </button>
       </div>
     </div>

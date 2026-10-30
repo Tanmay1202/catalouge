@@ -20,7 +20,7 @@ Mobile-first catalogue website for **Ziba by Nidhi** (@ziba_by_nidhi_jewellery) 
 ## Brand Positioning Rules
 - **Category:** Handcrafted artificial jewellery / fashion jewellery.
 - **DO NOT USE:** "Fine jewellery", "bespoke", "luxury", "solid gold", "sterling silver", "anti-tarnish", or "waterproof" (unless explicitly verified with the client).
-- **Price Format:** Indian Rupee formatting (`₹1,299`).
+- **Pricing:** Pricing is omitted across the storefront and admin; all items feature direct "Enquire on WhatsApp" actions for pricing and availability.
 
 ## Design Tokens (Matching Logo Palette)
 - Background: `#FAF6F2` (soft warm ivory page), `#FFFFFF` (card)

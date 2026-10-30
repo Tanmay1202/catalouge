@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Search, X, MessageCircle } from 'lucide-react';
 import { BRAND_CONFIG, getProductWhatsAppLink } from '../../config/brand';
+import { useCategories } from '../../lib/categories';
 
 export const Header: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -19,10 +20,12 @@ export const Header: React.FC = () => {
     }
   };
 
+  const { categories } = useCategories();
+
   // Build category navigation list: "All" followed by each category
   const categoryNavItems = [
     { label: 'All', path: '/products', category: '' },
-    ...BRAND_CONFIG.categories.map((cat) => ({
+    ...categories.map((cat) => ({
       label: cat,
       path: `/products?category=${encodeURIComponent(cat)}`,
       category: cat,

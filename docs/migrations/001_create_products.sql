@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS public.products (
   product_code    TEXT NOT NULL,
   name            TEXT NOT NULL,
   category        TEXT NOT NULL,
-  price           NUMERIC NOT NULL DEFAULT 0,
-  original_price  NUMERIC,
+  price           NUMERIC DEFAULT NULL,
+  original_price  NUMERIC DEFAULT NULL,
   description     TEXT NOT NULL DEFAULT '',
   colors          TEXT[] NOT NULL DEFAULT '{}',
   images          TEXT[] NOT NULL DEFAULT '{}',
@@ -28,13 +28,9 @@ ALTER TABLE public.products
 ALTER TABLE public.products 
   ADD CONSTRAINT uq_products_product_code UNIQUE (product_code);
 
--- Check category constraint
+-- Drop category constraint if present (allows custom categories from admin panel)
 ALTER TABLE public.products 
   DROP CONSTRAINT IF EXISTS chk_products_category;
-
-ALTER TABLE public.products 
-  ADD CONSTRAINT chk_products_category
-  CHECK (category IN ('Necklaces', 'Earrings', 'Bracelets', 'Rings', 'Bangles'));
 
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_products_category ON public.products (category);

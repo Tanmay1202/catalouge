@@ -13,7 +13,7 @@ export type { Category };
  * Category metadata with placeholder photography
  * TODO(client): Replace with brand's real jewellery photography
  */
-export const CATEGORY_METADATA: Record<Category, { title: string; image: string; description: string }> = {
+export const CATEGORY_METADATA: Record<string, { title: string; image: string; description: string }> = {
   Necklaces: {
     title: 'Necklaces',
     image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop',

@@ -7,14 +7,16 @@ import { fetchActiveProducts } from '../../lib/products';
 import { ProductCard } from '../../components/product/ProductCard';
 import { Spinner } from '../../components/ui/Spinner';
 import { BRAND_CONFIG, Category } from '../../config/brand';
+import { useCategories } from '../../lib/categories';
 
 export const ProductsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const categoryParam = searchParams.get('category') || '';
   const searchParam = searchParams.get('search') || '';
-  const sortParam = (searchParams.get('sort') as 'newest' | 'price-asc' | 'price-desc') || 'newest';
+  const sortParam = (searchParams.get('sort') as 'newest' | 'name-asc' | 'name-desc') || 'newest';
 
+  const { categories } = useCategories();
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchInput, setSearchInput] = useState(searchParam);
@@ -131,8 +133,8 @@ export const ProductsPage: React.FC = () => {
               className="text-xs rounded-md border border-[#EBDCD2] bg-white px-2.5 py-1.5 text-[#2B1A15] focus:outline-none focus:ring-1 focus:ring-[#C47A53]"
             >
               <option value="newest">Newest</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
+              <option value="name-asc">Name: A to Z</option>
+              <option value="name-desc">Name: Z to A</option>
             </select>
           </div>
         </div>
@@ -149,7 +151,7 @@ export const ProductsPage: React.FC = () => {
           >
             All Categories
           </button>
-          {BRAND_CONFIG.categories.map((cat: Category) => (
+          {categories.map((cat: Category) => (
             <button
               key={cat}
               onClick={() => updateParam('category', categoryParam === cat ? '' : cat)}

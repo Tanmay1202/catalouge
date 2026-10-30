@@ -1,12 +1,14 @@
 // src/components/admin/ProductForm.tsx
 import React, { useState } from 'react';
 import { Product, ProductFormData, Category } from '../../types/product';
-import { BRAND_CONFIG } from '../../config/brand';
 import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
 import { Button } from '../ui/Button';
 import { ImageUploader } from './ImageUploader';
 import { checkProductCodeExists } from '../../lib/products';
+import { useCategories } from '../../lib/categories';
+import { useColors } from '../../lib/colors';
+import { Plus, X, Check } from 'lucide-react';
 
 export interface ProductFormProps {
   initialProduct?: Product | null;
@@ -23,12 +25,17 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 }) => {
   const isEdit = Boolean(initialProduct);
 
+  const { categories, addCategory: createCategory } = useCategories();
+  const { colors: allAvailableColors, addColor: createGlobalColor } = useColors();
+
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [newCategoryInput, setNewCategoryInput] = useState('');
+  const [customColorInput, setCustomColorInput] = useState('');
+
   const [formData, setFormData] = useState<ProductFormData>({
     product_code: initialProduct?.product_code || '',
     name: initialProduct?.name || '',
     category: initialProduct?.category || 'Necklaces',
-    price: initialProduct?.price || 0,
-    original_price: initialProduct?.original_price || undefined,
     description: initialProduct?.description || '',
     colors: initialProduct?.colors || ['Gold Tone'],
     images: initialProduct?.images || [],
@@ -40,15 +47,55 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isCheckingCode, setIsCheckingCode] = useState(false);
 
+  // Handle on-the-fly category creation
+  const handleCreateCategory = () => {
+    const trimmed = newCategoryInput.trim();
+    if (!trimmed) return;
+    createCategory(trimmed);
+    setFormData((prev) => ({ ...prev, category: trimmed }));
+    setNewCategoryInput('');
+    setIsAddingCategory(false);
+  };
+
+  // Toggle color inclusion in product
+  const handleToggleColor = (colorName: string) => {
+    setFormData((prev) => {
+      const current = prev.colors || [];
+      const exists = current.includes(colorName);
+      const updated = exists
+        ? current.filter((c) => c !== colorName)
+        : [...current, colorName];
+      return { ...prev, colors: updated };
+    });
+  };
+
+  // Remove a selected color
+  const handleRemoveColor = (colorName: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      colors: (prev.colors || []).filter((c) => c !== colorName),
+    }));
+  };
+
+  // Add a new custom color
+  const handleAddNewCustomColor = () => {
+    const trimmed = customColorInput.trim();
+    if (!trimmed) return;
+    createGlobalColor(trimmed);
+    setFormData((prev) => {
+      const current = prev.colors || [];
+      return current.includes(trimmed)
+        ? prev
+        : { ...prev, colors: [...current, trimmed] };
+    });
+    setCustomColorInput('');
+  };
+
   const validate = async (): Promise<boolean> => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
       newErrors.name = 'Product name is required';
-    }
-
-    if (formData.price <= 0 || isNaN(formData.price)) {
-      newErrors.price = 'Please enter a valid price in ₹ (e.g. 899)';
     }
 
     if (formData.product_code?.trim()) {
@@ -97,47 +144,56 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             required
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
-              label="Selling Price (₹)"
-              type="number"
-              placeholder="e.g. 1299"
-              value={formData.price || ''}
-              onChange={(e) => {
-                setFormData({ ...formData, price: Number(e.target.value) });
-                if (errors.price) setErrors({ ...errors, price: '' });
-              }}
-              error={errors.price}
-              required
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+            {/* Category Field with Inline Creation */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500">
+                  Category
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setIsAddingCategory(!isAddingCategory)}
+                  className="text-xs font-medium text-[#C47A53] hover:underline inline-flex items-center gap-1"
+                >
+                  <Plus className="w-3 h-3" />
+                  <span>{isAddingCategory ? 'Select existing' : 'New Category'}</span>
+                </button>
+              </div>
 
-            <Input
-              label="Original MRP (₹, optional)"
-              type="number"
-              placeholder="e.g. 1599"
-              value={formData.original_price || ''}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  original_price: e.target.value ? Number(e.target.value) : undefined,
-                })
-              }
-              helperText="Shows as struck-through discount price if set"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Select
-              label="Category"
-              value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value as Category })}
-            >
-              {BRAND_CONFIG.categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </Select>
+              {isAddingCategory ? (
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="text"
+                    placeholder="e.g. Anklets, Mangalsutra"
+                    value={newCategoryInput}
+                    onChange={(e) => setNewCategoryInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleCreateCategory();
+                      }
+                    }}
+                    autoFocus
+                    className="w-full text-xs rounded-md border border-[#EBDCD2] px-2.5 py-2 text-[#2B1A15] focus:outline-none focus:ring-1 focus:ring-[#C47A53]"
+                  />
+                  <Button type="button" size="sm" onClick={handleCreateCategory}>
+                    Add
+                  </Button>
+                </div>
+              ) : (
+                <Select
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value as Category })}
+                >
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            </div>
 
             <Input
               label="Item Code (optional)"
@@ -149,6 +205,101 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               }}
               error={errors.product_code}
             />
+          </div>
+
+          {/* Available Colors & Finishes */}
+          <div className="p-4 rounded-lg border border-[#EBDCD2] bg-white space-y-3">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700">
+                Available Colors / Finishes
+              </label>
+              <p className="text-[11px] text-zinc-500 mt-0.5">
+                Select the finishes available for this piece or add a custom color.
+              </p>
+            </div>
+
+            {/* Currently Selected Color Tags */}
+            {formData.colors && formData.colors.length > 0 && (
+              <div className="flex flex-wrap items-center gap-1.5 p-2 rounded-md bg-[#FAF6F2] border border-[#EBDCD2]">
+                <span className="text-[11px] font-medium text-zinc-500 mr-1">Selected:</span>
+                {formData.colors.map((c) => (
+                  <span
+                    key={c}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-white text-[#2B1A15] border border-[#EBDCD2] shadow-2xs"
+                  >
+                    <span>{c}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveColor(c)}
+                      className="text-zinc-400 hover:text-red-600 transition-colors"
+                      aria-label={`Remove color ${c}`}
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Color Presets Pill Toggles */}
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-medium text-zinc-500 block">
+                Quick select color options:
+              </span>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {allAvailableColors.map((color) => {
+                  const isSelected = formData.colors?.includes(color.name);
+                  return (
+                    <button
+                      key={color.name}
+                      type="button"
+                      onClick={() => handleToggleColor(color.name)}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium border transition-colors ${
+                        isSelected
+                          ? 'bg-[#F7ECE4] border-[#C47A53] text-[#2B1A15] font-semibold'
+                          : 'bg-white border-zinc-200 text-zinc-600 hover:border-zinc-300'
+                      }`}
+                    >
+                      {color.hex && (
+                        <span
+                          className="w-2.5 h-2.5 rounded-full border border-black/10 flex-shrink-0"
+                          style={{ backgroundColor: color.hex }}
+                        />
+                      )}
+                      <span>{color.name}</span>
+                      {isSelected && <Check className="w-3 h-3 text-[#C47A53]" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Add Custom Color Input */}
+            <div className="flex items-center gap-2 pt-1 border-t border-zinc-100">
+              <input
+                type="text"
+                placeholder="Add custom color (e.g. Mint Green, Meenakari White)..."
+                value={customColorInput}
+                onChange={(e) => setCustomColorInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddNewCustomColor();
+                  }
+                }}
+                className="flex-1 text-xs rounded-md border border-[#EBDCD2] px-2.5 py-1.5 text-[#2B1A15] placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-[#C47A53]"
+              />
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={handleAddNewCustomColor}
+                className="shrink-0"
+              >
+                <Plus className="w-3.5 h-3.5 mr-1" />
+                <span>Add Color</span>
+              </Button>
+            </div>
           </div>
 
           <div>
@@ -194,23 +345,31 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           </div>
         </div>
 
-        {/* Right Column: Photography */}
-        <div className="lg:col-span-5">
-          <ImageUploader
-            images={formData.images || []}
-            onChange={(images) => setFormData({ ...formData, images })}
-            productPrefix={formData.product_code || 'item'}
-          />
+        {/* Right Column: Images (Desktop preview alongside info) */}
+        <div className="lg:col-span-5 space-y-4">
+          <div className="bg-white p-4 sm:p-5 rounded-lg border border-[#EBDCD2] space-y-4">
+            <div>
+              <h3 className="text-sm font-semibold text-[#2B1A15]">Product Photography</h3>
+              <p className="text-xs text-[#7D6B63] mt-0.5">
+                Upload clear jewellery photos. The first image will be used as the primary display image.
+              </p>
+            </div>
+
+            <ImageUploader
+              images={formData.images || []}
+              onChange={(images) => setFormData({ ...formData, images })}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="pt-4 border-t border-zinc-200 flex items-center justify-end gap-3">
+      {/* Form Action Buttons */}
+      <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#EBDCD2]">
         <Button
           type="button"
-          variant="secondary"
+          variant="outline"
           onClick={onCancel}
-          disabled={isSubmitting || isCheckingCode}
+          disabled={isSubmitting}
         >
           Cancel
         </Button>

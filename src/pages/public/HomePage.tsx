@@ -8,11 +8,13 @@ import { ProductCard } from '../../components/product/ProductCard';
 import { Spinner } from '../../components/ui/Spinner';
 import { BRAND_CONFIG, Category, getProductWhatsAppLink } from '../../config/brand';
 import { CATEGORY_METADATA } from '../../config/constants';
+import { useCategories } from '../../lib/categories';
 
 export const HomePage: React.FC = () => {
+  const { categories } = useCategories();
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [sortOrder, setSortOrder] = useState<'newest' | 'price-asc' | 'price-desc'>('newest');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'name-asc' | 'name-desc'>('newest');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -99,8 +101,12 @@ export const HomePage: React.FC = () => {
 
         {/* Category tiles */}
         <div className="flex sm:grid sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 overflow-x-auto no-scrollbar pb-1">
-          {BRAND_CONFIG.categories.map((cat: Category) => {
-            const meta = CATEGORY_METADATA[cat];
+          {categories.map((cat: Category) => {
+            const meta = CATEGORY_METADATA[cat] || {
+              title: cat,
+              image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=800&auto=format&fit=crop',
+              description: `Explore our handcrafted ${cat}.`,
+            };
             const isSelected = selectedCategory === cat;
 
             return (
@@ -158,12 +164,12 @@ export const HomePage: React.FC = () => {
               <select
                 id="sort-select"
                 value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value as 'newest' | 'price-asc' | 'price-desc')}
+                onChange={(e) => setSortOrder(e.target.value as 'newest' | 'name-asc' | 'name-desc')}
                 className="text-xs rounded-md border border-[#EBDCD2] bg-white px-2.5 py-1.5 text-[#2B1A15] focus:outline-none focus:ring-1 focus:ring-[#C47A53]"
               >
                 <option value="newest">Newest</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
+                <option value="name-asc">Name: A to Z</option>
+                <option value="name-desc">Name: Z to A</option>
               </select>
             </div>
           </div>
@@ -180,7 +186,7 @@ export const HomePage: React.FC = () => {
             >
               All Pieces
             </button>
-            {BRAND_CONFIG.categories.map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(selectedCategory === cat ? '' : cat)}

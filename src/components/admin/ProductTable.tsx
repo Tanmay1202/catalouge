@@ -6,7 +6,6 @@ import { EmptyState } from '../ui/EmptyState';
 import { Spinner } from '../ui/Spinner';
 import { Edit2, Trash2, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { formatPrice } from '../../config/brand';
 
 export interface ProductTableProps {
   products: Product[];
@@ -53,7 +52,6 @@ export const ProductTable: React.FC<ProductTableProps> = ({
               <th scope="col" className="py-3 px-4">Photo</th>
               <th scope="col" className="py-3 px-4">Name</th>
               <th scope="col" className="py-3 px-4">Category</th>
-              <th scope="col" className="py-3 px-4">Price</th>
               <th scope="col" className="py-3 px-4">Status</th>
               <th scope="col" className="py-3 px-4 text-right">Actions</th>
             </tr>
@@ -96,11 +94,6 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                   {/* Category */}
                   <td className="py-3 px-4 text-zinc-500 text-xs">
                     {product.category}
-                  </td>
-
-                  {/* Price */}
-                  <td className="py-3 px-4 font-semibold text-zinc-900 text-xs sm:text-sm">
-                    {formatPrice(product.price)}
                   </td>
 
                   {/* Status */}

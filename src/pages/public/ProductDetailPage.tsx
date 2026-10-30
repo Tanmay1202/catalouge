@@ -5,7 +5,7 @@ import { Product } from '../../types/product';
 import { fetchProductByIdOrCode } from '../../lib/products';
 import { Spinner } from '../../components/ui/Spinner';
 import { MessageCircle, ArrowLeft } from 'lucide-react';
-import { formatPrice, getProductWhatsAppLink, BRAND_CONFIG } from '../../config/brand';
+import { getProductWhatsAppLink, BRAND_CONFIG } from '../../config/brand';
 
 export const ProductDetailPage: React.FC = () => {
   const { productCode } = useParams<{ productCode: string }>();
@@ -82,7 +82,7 @@ export const ProductDetailPage: React.FC = () => {
   const productUrl = typeof window !== 'undefined' ? window.location.href : undefined;
 
   const handleWhatsAppEnquiry = () => {
-    const link = getProductWhatsAppLink(product.name, product.price, productUrl);
+    const link = getProductWhatsAppLink(product.name, undefined, productUrl);
     window.open(link, '_blank', 'noopener,noreferrer');
   };
 
@@ -143,19 +143,27 @@ export const ProductDetailPage: React.FC = () => {
             <h1 className="text-2xl sm:text-3xl font-bold text-[#2B1A15]">
               {product.name}
             </h1>
-
-            {/* Price */}
-            <div className="flex items-baseline gap-2.5 pt-1">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#2B1A15]">
-                {formatPrice(product.price)}
-              </span>
-              {product.original_price && product.original_price > product.price && (
-                <span className="text-sm text-[#7D6B63]/70 line-through">
-                  {formatPrice(product.original_price)}
-                </span>
-              )}
-            </div>
           </div>
+
+          {/* Available Colors */}
+          {product.colors && product.colors.length > 0 && (
+            <div className="border-t border-[#EBDCD2] pt-4 space-y-2">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-[#7D6B63]">
+                Available Colors / Finishes
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {product.colors.map((color) => (
+                  <span
+                    key={color}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#FAF6F2] text-[#2B1A15] border border-[#EBDCD2]"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-[#C47A53]" />
+                    <span>{color}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Description */}
           <div className="border-t border-[#EBDCD2] pt-4 space-y-2">

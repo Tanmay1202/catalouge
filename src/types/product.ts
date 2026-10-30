@@ -7,7 +7,7 @@ export interface Product {
   id: string;
   name: string;
   category: Category;
-  price: number;
+  price?: number;
   original_price?: number;
   images: string[];
   description: string;
@@ -23,8 +23,6 @@ export interface Product {
 export interface ProductFormData {
   name: string;
   category: Category;
-  price: number;
-  original_price?: number;
   description: string;
   colors?: string[];
   product_code?: string;
@@ -38,5 +36,5 @@ export interface ProductFilterParams {
   category?: string;
   search?: string;
   status?: 'all' | 'active' | 'inactive';
-  sort?: 'newest' | 'price-asc' | 'price-desc';
+  sort?: 'newest' | 'name-asc' | 'name-desc';
 }

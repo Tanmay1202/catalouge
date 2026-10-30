@@ -54,11 +54,11 @@ export const BRAND_CONFIG = {
   currencySymbol: '₹',
   currencyLocale: 'en-IN',
 
-  /** Category list */
+  /** Default initial category list */
   categories: ['Necklaces', 'Earrings', 'Bracelets', 'Rings', 'Bangles'] as const,
 };
 
-export type Category = (typeof BRAND_CONFIG.categories)[number];
+export type Category = string;
 
 /**
  * Format a number into Indian currency representation (e.g. 1299 -> ₹1,299)
@@ -73,7 +73,7 @@ export function formatPrice(price: number): string {
  */
 export function getProductWhatsAppLink(
   productName?: string,
-  price?: number,
+  _price?: number,
   productUrl?: string
 ): string {
   const number = BRAND_CONFIG.whatsappNumber.replace(/[^0-9]/g, '');
@@ -89,10 +89,9 @@ export function getProductWhatsAppLink(
   const base = number ? `https://wa.me/${number}` : 'https://wa.me/';
 
   if (productName) {
-    const priceText = price ? ` (${formatPrice(price)})` : '';
     const urlText = productUrl || (typeof window !== 'undefined' ? window.location.href : '');
     const message = encodeURIComponent(
-      `Hi ${BRAND_CONFIG.name}, I am interested in "${productName}"${priceText}. Could you please share availability and ordering details?\n${urlText}`
+      `Hi ${BRAND_CONFIG.name}, I am interested in "${productName}". Could you please share price, availability, and ordering details?\n${urlText}`
     );
     return `${base}?text=${message}`;
   }
